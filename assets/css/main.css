@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+    background-color: #181717;
+    border-bottom: solid 2px #233d63;
+}
+
+.content{
+    background-color: #333336;
+    display: grid;
+    grid-template-columns: 10% 86%;
+}
+
+.colores{
+    color: #274b69;
+    color: #233d63;
+    color: #85a1c1;
+    color: #c6ccd8;
+    color: #3f4d63;
+    color: #333336;
+    color: #202022;
+    color: #181717;
+}
+
+.nav-aside{
+    background-color: #202022;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.nav-aside ul {
+    list-style-type: none;
+}
+
+.lista-enlace {
+    margin: 15px 0;
+    color: #c6ccd8;
+}
+
+.lista-enlace a{
+    text-decoration: none;
+    color: #c6ccd8;
+}
+
+.lista-enlace a:hover {
+    color: #85a1c1;
+}
+
+main{
+    padding: 20px;
+    overflow-x: auto;
+}
+
+#mostrar-aside{
+    display: none;
+}
+
+.tb-principal{
+    margin: auto;
+    color: whitesmoke;
+    width: 100%;
+}
+
+th{
+    margin: 0;
+    padding: .4rem;
+    font-weight: bold;
+    border-top: solid 1px rgb(104, 103, 103);
+    border-left: solid 1px rgb(104, 103, 103);
+    border-right: solid 1px rgb(104, 103, 103);
+    background-color: #233d63;
+    width: max-content;
+}
+
+td{
+    padding: .4rem;
+    border: solid 1px rgb(104, 103, 103);
+    width: max-content;
+}
+
