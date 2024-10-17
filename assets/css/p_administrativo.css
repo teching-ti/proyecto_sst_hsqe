@@ -7,6 +7,10 @@
     font-style: normal;
 }
 
+body{
+    background: red;
+}
+
 header{
     display: flex;
     justify-content: center;
@@ -18,6 +22,7 @@ header{
 .content{
     background-color: #333336;
     display: flex;
+    height: 100vh;
 }
 
 .colores{
@@ -34,10 +39,9 @@ header{
 .nav-aside{
     background-color: #202022;
     width: 100%;
+    height: 100%;
     min-width: 260px;
-    height: 100vh;
     padding: 20px;
-    overflow-y: auto;
 }
 
 .nav-aside ul {
@@ -62,4 +66,53 @@ main{
     width: 100%;
     padding: 20px;
     overflow-x: auto;
+}
+
+h1{
+    color: #c6ccd8;
+    margin: 1rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+}
+
+thead{
+    background: #202022;
+}
+
+th{
+    font-weight: bold;
+}
+
+th, td{
+    border: 1px solid #3f4d63;
+    color: #c6ccd8;
+    padding: 6px;
+    min-width: 120px;
+}
+
+#btn-agregar-personal{
+    background-color: #164b99;
+    color: whitesmoke;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: medium;
+    padding: .6rem;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    width: 54px;
+    height: 54px;
+    cursor: pointer;
+    transition: all ease-in-out .4s;
+    right: 60px;
+    bottom: 60px;
+    position: fixed;
+}
+
+#btn-agregar-personal:hover{
+    background-color: #1d61c9;
+    transform: scale(104%); 
 }
