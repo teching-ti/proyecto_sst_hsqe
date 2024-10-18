@@ -8,9 +8,12 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Page tiitle -->
     <title><?= htmlspecialchars($titulo)?></title>
     <!-- Estilos -->
     <link rel="stylesheet" href="assets/css/<?= htmlspecialchars($hoja_de_estilos) ?>">
+    <!-- FavIcon -->
+    <link rel="shortcut icon" href="assets/img/favicon-teching.png" type="image/x-icon">
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +37,8 @@
                     <li class="lista-enlace"><a href="personal_operativo"><i class="fa-solid fa-list"></i> Personal Operativo</a></li>
                     <li class="lista-enlace"><a href="documentos"><i class="fa-regular fa-folder-open"></i> Documentos</a></li>
                     <li class="lista-enlace"><a href="otros"><i class="fa-solid fa-layer-group"></i> Otros</a></li>
+                    <li class="lista-enlace"><a href="signin"><i class="fa-solid fa-user-plus"></i> Registrar usuario</a></li>
+                    <li class="lista-enlace"><a href="salir"><i class="fa-solid fa-door-open"></i> Salir</a></li>
                 </ul>
             </aside>
         </section>

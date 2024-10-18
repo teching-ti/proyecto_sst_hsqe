@@ -16,17 +16,24 @@ class User{
     }
 
     public function register($usuario, $apellidos, $nombres, $contrasena, $rol) {
+        
+        // consulta parametrizada sql
         $query = "INSERT INTO " . $this->table . " (usuario, apellidos, nombres, contrasena, rol) VALUES (:usuario, :apellidos, :nombres, :contrasena, :rol)";
+        // preparación de consulta, se deberá de usar bindParam
         $stmt = $this->conn->prepare($query);
 
         $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
-
+        
+        // parámetros de consulta sql
+        // 'los parámetros deben de cumplir con la cantidad segpun lo declarado por le modelo'
         $stmt->bindParam(':usuario', $usuario);
         $stmt->bindParam(':apellidos', $apellidos);
         $stmt->bindParam(':nombres', $nombres);
         $stmt->bindParam(':contrasena', $hashed_password);
         $stmt->bindParam(':rol', $rol);
+        
 
+        //ejecución de consulta preparada
         if ($stmt->execute()) {
             return true;
         }

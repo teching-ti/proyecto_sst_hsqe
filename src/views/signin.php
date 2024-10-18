@@ -1,36 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+$hoja_de_estilos = "signin.css?v=".time();
+$titulo = "Registro de Usuarios";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuarios</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
+include "base.php";
+?>
+<main>
+    <h2>Registrar Nuevo Usuario (Vista solo disponible para administrador - jvalladares)</h2>
+    <div class="form-content">
+        <form action="index.php?page=registrar" id="form-register" class="form-register" method="POST">
+            <label for="usuario">Usuario:</label>
+            <input type="text" name="usuario" id="usuario"  required>
 
-<body>
-    <h2>Registrar Nuevo Usuario</h2>
-    <form action="index.php?page=registrar" method="POST">
-        <label for="usuario">Usuario:</label>
-        <input type="text" name="usuario" required>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos"  id="apellidos" required>
 
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" name="apellidos" required>
+            <label for="nombres">Nombres:</label>
+            <input type="text" name="nombres" id="nombres" required>
 
-        <label for="nombres">Nombres:</label>
-        <input type="text" name="nombres" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" name="contrasena" id="contrasena" required>
 
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" name="contrasena" required>
+            <label for="rol"></label>
+            <select name="rol" id="rol" required>
+                <option disabled selected>Seleccionar Rol</option>
+                <?php foreach($roles as $rol): ?>
+                    <option value="<?= $rol['id'];?>"><?= $rol['nombre'];?></option>
+                <?php endforeach; ?>
+            </select>
 
-        <label for="rol"></label>
-        <select name="rol" id="rol">
-            <option>Rol</option>
-            <option value="1">Admin</option>
-        </select>
-
-        <button type="submit">Registrar</button>
-    </form>
+            <button type="submit" id="btn-registrar">Registrar</button>
+        </form>
+    </div>
+</main>
 </body>
 
 </html>

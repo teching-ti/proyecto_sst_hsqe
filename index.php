@@ -20,7 +20,8 @@ switch ($page) {
         include 'src/views/login.php';
         break;
     case 'signin':
-        include 'src/views/signin.php';
+        $userController->mostrarRegistroForm();
+        // include 'src/views/signin.php';
         break;
     case 'registrar':
         $userController->register();
@@ -34,8 +35,14 @@ switch ($page) {
     case 'documentos':
         include 'src/views/documentos.php';
         break;
+    case 'registrar_trabajador':
+        include 'src/views/registrar_trabajador.php';
+        break;
     case 'otros':
         include 'src/views/otros.php';
+        break;
+    case 'salir':
+        $userController->logout();
         break;
     default:
         include 'src/views/error404.php';

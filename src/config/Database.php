@@ -16,6 +16,9 @@ class Database {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
+            /*
+                - Este mensaje de error deberá ser cambiado por uno general en fase de deploy
+            */
             echo 'Error: ' . $e->getMessage();
         }
         return $this->conn;

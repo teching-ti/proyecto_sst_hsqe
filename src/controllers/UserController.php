@@ -1,11 +1,19 @@
 <?php
 require_once 'src/models/User.php';
+require_once 'src/models/Role.php';
 
 class UserController {
     private $conn;
 
     public function __construct($db) {
         $this->conn = $db;
+    }
+
+    public function mostrarRegistroForm(){
+        $roleModel = new Role($this->conn);
+        $roles = $roleModel->getRoles();
+
+        include 'src/views/signin.php';
     }
 
     public function register() {
@@ -18,16 +26,19 @@ class UserController {
             $contrasena = $_POST['contrasena'];
             $rol = $_POST['rol'];
 
+            // instancia con parámetro esperando conexión
             $user = new User($this->conn);
             
             if ($user->register($usuario, $apellidos, $nombres, $contrasena, $rol)) {
+                /*
+                    - Se deberá de substituir el uso directo de header por un cambio de ruta
+                */
                 header('Location: index.php?page=login');
                 exit;
             } else {
                 echo 'Error al registrar el usuario.';
             }
         }
-
         include 'src/views/register.php';
     }
 
@@ -56,7 +67,10 @@ class UserController {
     public function logout() {
         session_start();
         session_destroy();
-        header('Location: index.php?page=login');
+        /*
+            - Se deberá de substituir el uso de ruta directa
+        */
+        header('Location: index.php?page=inicio');
         exit;
     }
 }
