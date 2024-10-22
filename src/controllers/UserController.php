@@ -52,8 +52,10 @@ class UserController {
             $user = new User($this->conn);
             
             if ($user->login($usuario, $contrasena)) {
-                $_SESSION['user_id'] = $user->id;
-                header('Location: index.php?page=main');
+                $_SESSION['usuario'] = $user->usuario;
+                $_SESSION['nombres'] = $user->nombres;
+                $_SESSION['apellidos'] = $user->apellidos;
+                header('Location: index.php?page=inicio');
                 exit;
             } else {
                 echo 'Usuario o contraseña incorrectos';

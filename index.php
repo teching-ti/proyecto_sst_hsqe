@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+$usuario_logueado = isset($_SESSION['usuario']);
+$nombres_usuario = $usuario_logueado ? $_SESSION['nombres'] : null;
+
 require_once 'src/config/Database.php';
 require_once 'src/controllers/UserController.php';
 
@@ -17,7 +20,11 @@ switch ($page) {
         include 'src/views/main.php';
         break;
     case 'login':
-        include 'src/views/login.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userController->login();
+        } else {
+            include 'src/views/login.php';
+        }
         break;
     case 'signin':
         $userController->mostrarRegistroForm();

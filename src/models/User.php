@@ -4,7 +4,6 @@ class User{
     private $conn;
     private $table = 'tb_usuarios';
 
-    public $id;
     public $usuario;
     public $apellidos;
     public $nombres;
@@ -25,7 +24,7 @@ class User{
         $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
         
         // parámetros de consulta sql
-        // 'los parámetros deben de cumplir con la cantidad segpun lo declarado por le modelo'
+        // 'los parámetros deben de cumplir con la cantidad segun lo declarado por le modelo'
         $stmt->bindParam(':usuario', $usuario);
         $stmt->bindParam(':apellidos', $apellidos);
         $stmt->bindParam(':nombres', $nombres);
@@ -40,16 +39,17 @@ class User{
         return false;
     }
 
-    // login aún en proceso
-    public function login($username, $password) {
-        $query = "SELECT id, usuario, contrasena FROM " . $this->table . " WHERE usuario = :username LIMIT 1";
+    public function login($usuario, $password) {
+        $query = "SELECT usuario, nombres, apellidos, contrasena FROM " . $this->table . " WHERE usuario = :usuario LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':usuario', $usuario);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->id = $row['id'];
+            $this->usuario = $row['usuario'];
+            $this->nombres = $row['nombres'];
+            $this->apellidos = $row['apellidos'];
             $hashed_password = $row['contrasena'];
 
             if (password_verify($password, $hashed_password)) {

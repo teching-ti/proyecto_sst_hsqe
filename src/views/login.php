@@ -28,11 +28,11 @@
     <h3>Iniciar Sesión</h3>
     <div class="form-content">
         <form action="index.php?page=login" class="form-login" method="POST">
-            <label for="username">Nombre de Usuario o Correo:</label>
-            <input type="text" id="username" name="username" required>
+            <label for="usuario">Nombre de Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
             
-            <label for="password">Contraseña:</label>
-            <input type="password"  id="password" name="password" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password"  id="contrasena" name="contrasena" required>
             
             <button type="submit" class="btn-ingresar">Ingresar</button>
         </form>
