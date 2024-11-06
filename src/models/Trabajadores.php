@@ -1,4 +1,5 @@
 <?php
+
 class Trabajadores{
 
     private $conn;
@@ -8,14 +9,10 @@ class Trabajadores{
     }
     
     public function getPersonalAdministrativo(){
-        // una función por lsita
+        $query = "SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, fecha_ingreso, correo, tipo_contrato, estado, telefono FROM tb_trabajadores WHERE id_tipo = 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function getPersonalOperativo(){
-
-    }
-
-    // Agregar los set para insertar 
-
 }
 ?>

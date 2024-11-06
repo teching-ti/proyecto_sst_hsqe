@@ -1,57 +1,52 @@
 <?php 
 $hoja_de_estilos = "p_administrativo.css?v=".time();
 $titulo = "Personal Administrativo";
-
 include "base.php";
 ?>
     <main>
         <h1>Listado de Personal Administrativo</h1>
         <table class="tb-principal">
-            <thead>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Activo</th>
+                <th>Apellidos</th>
+                <th>Nombres</th>
+                <th>DNI</th>
+                <th>Cargo</th>
+                <th>Área</th>
+                <th>Departamento</th>
+                <th>Celular</th>
+                <th>Fecha de Ingreso</th>
+                <th>Correo</th>
+                <th>Tipo de Contrato</th>
+                <th>Telefono</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $contador = 1;
+                foreach ($personalAdministrativo as $trabajador): ?>
                 <tr>
-                    <th>DNI</th>
-                    <th>Apellido</th>
-                    <th>Nombres</th>
-                    <th>Cargo</th>
-                    <th>Area</th>
-                    <th>F.Ingreso</th>
+                    <td><?php echo $contador++; ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['activo'] ? 'Sí' : 'No'); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['apellidos']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['nombres']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['id']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['cargo']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['area']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['departamento']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['celular']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['fecha_ingreso']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['correo']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['tipo_contrato']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['estado']); ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>72978281</td>
-                    <td>Villanueva</td>
-                    <td>Alejandro</td>
-                    <td>Programador Senior</td>
-                    <td>Desarrollo</td>
-                    <td>2024-09-11</td>
-                </tr>
-                <tr>
-                    <td>72978456</td>
-                    <td>Villanueva</td>
-                    <td>Alejandro</td>
-                    <td>Analista</td>
-                    <td>Desarrollo</td>
-                    <td>2024-09-11</td>
-                </tr>
-                <tr>
-                    <td>1054968754268495120415</td>
-                    <td>Villanueva</td>
-                    <td>Alejandro</td>
-                    <td>Documentador</td>
-                    <td>Desarrollo</td>
-                    <td>2024-09-11</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Villanueva</td>
-                    <td>Alejandro</td>
-                    <td>Gestor  </td>
-                    <td>Desarrollo</td>
-                    <td>2024-09-11</td>
-                </tr>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
         <button id="btn-agregar-personal">
             <i class="fa-solid fa-plus"></i>
