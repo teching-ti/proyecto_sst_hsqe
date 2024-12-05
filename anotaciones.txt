@@ -1,3 +1,20 @@
+4_12 => Agregar Listado general de documentos por usuario
+
+/*** Para crear tabla de historial de acciones
+tabla_historial.
+id (ai).
+usuario.
+accion.
+fecha.
+***/
+
+/* Credenciales 
+jvalladares
+jiVP+-23
+
+- avillanueva
+- lavelllaneda
+
 
 
 1. Creación de enrutadores (Back)

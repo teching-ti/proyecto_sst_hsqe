@@ -23,5 +23,18 @@ class Documentos{
         return false;
     }
 
+    public function getDocumentos(){
+        $query = "SELECT 
+                    d.id,
+                    d.nombre as nombre, 
+                    c.nombre as cat_documento
+                FROM 
+                    tb_documentos d
+                INNER JOIN 
+                    tb_catdocumento c ON d.cat_documento = c.id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

@@ -27,6 +27,7 @@
     <script src="assets/js/main.js"></script>
 </head>
 <body>
+    <main>
     <header>
         <img src="assets/img/logo_color_teching.png" alt="logo_tech">
         <li id="btn-mostrar-aside" class="lista-enlace"><i class="fa-solid fa-bars fa-2xl"></i></i></li>
@@ -36,10 +37,10 @@
             <ul class="nav-options">
                 <div id="elementos-aside">
                     <li class="lista-enlace"><a href="inicio"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li class="lista-enlace"><a href="trabajadores"><i class="fa-solid fa-users-line"></i> Personal de la empresa</a></li>
                     <li class="lista-enlace"><a href="personal_administrativo"><i class="fa-solid fa-list"></i> Personal Administrativo</a></li>
                     <li class="lista-enlace"><a href="personal_operativo"><i class="fa-solid fa-list"></i> Personal Operativo</a></li>
                     <li class="lista-enlace"><a href="documentos"><i class="fa-regular fa-folder-open"></i> Documentos</a></li>
-                    <li class="lista-enlace"><a href="otros"><i class="fa-solid fa-layer-group"></i> Otros</a></li>
                     <li class="lista-enlace"><a href="signin"><i class="fa-solid fa-user-plus"></i> Registrar usuario</a></li>
                     <li class="lista-enlace"><a href="salir"><i class="fa-solid fa-door-open"></i> Salir</a></li>
                 </div>

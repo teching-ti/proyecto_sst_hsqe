@@ -69,9 +69,6 @@ class UserController {
     public function logout() {
         session_start();
         session_destroy();
-        /*
-            - Se deberá de substituir el uso de ruta directa
-        */
         header('Location: index.php?page=inicio');
         exit;
     }

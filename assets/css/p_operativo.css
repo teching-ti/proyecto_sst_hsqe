@@ -9,6 +9,12 @@
     color: #181717;
 }
 
+#principal{
+    width: 100%;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
 h1{
     color: #c6ccd8;
     margin: 1rem 0;
@@ -18,10 +24,11 @@ table {
     width: 100%;
     border-collapse: collapse;
     overflow-x: auto;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 thead{
-    background: #202022;
+    background: #181717;
 }
 
 th{
@@ -32,10 +39,182 @@ th, td{
     border: 1px solid #3f4d63;
     color: #c6ccd8;
     padding: 6px;
-    min-width: 120px;
+    text-align: center;
 }
 
-#btn-agregar-personal{
+.th-documentos{
+    min-width: 260px;
+}
+
+.th-datos-personales{
+    min-width: 160px;   
+}
+
+.td-documento{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.td-documento div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
+    width: 50%;
+    overflow: hidden;
+}
+
+.con_archivo{
+    background: rgba(8, 255, 8, 0.45);
+    transition: all ease-in-out .2s;
+}
+
+.con_archivo:hover{
+    background: rgba(8, 255, 8, 0.1);;
+}
+
+.sin_archivo{
+    background: rgb(22, 22, 24);
+}
+
+.adjuntar-doc{
+    border-radius: 8px;
+    background: #233d63;
+    color: whitesmoke;
+    border: solid 1px #1d61c9;
+    padding: 5px 8px;
+    font-weight: bold;
+    transition: all ease-in-out .3s;
+}
+
+.adjuntar-doc:hover{
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.enlace-documento{
+    padding: 2px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/*Contenido de modal*/
+#modal-archivo {
+    position: fixed;
+    /* top: 20px; */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all ease-in-out .6s;
+}
+
+.modal-visible{
+    display: flex;
+    top: 0px;
+}
+
+.modal-oculto{
+    top: -950px;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px #103874;
+    background-color: #3d3d42;
+    color: whitesmoke;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 720px;
+    text-align: center;
+    gap: 1.4rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+#archivo{
+    padding: 16px
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-botones{
+    display: flex;
+    justify-content: space-around;
+}
+
+#btn-guardar{
+    border-radius: 8px;
+    background: #274b69;
+    color: whitesmoke;
+    border: none;
+    outline: solid 2px #1d61c9;
+    padding: 11px 16px;
+    font-weight: bold;
+    transition: all ease-in-out .3s;
+    cursor: pointer;
+    margin-top: 1.4rem;
+    width: fit-content;
+}
+
+#btn-guardar:hover{
+    background: #103874;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.modal-sup{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-sup p{
+    font-size: 1.4rem;
+}
+
+#btn-cerrar{
+    color: aliceblue;
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+}
+
+#btn-cerrar:hover{
+    color: rgb(202, 28, 28);
+    transform: rotate(90deg);
+}
+
+#lbl-archivo{
+    margin: 0 auto;
+    width: fit-content;
+    display: inline-block;
+    padding: .5rem 1rem;
+    border: 1px solid #4a4a4b;
+    border-radius: .25rem;
+    cursor: pointer;
+    color: #a1a8ad;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: all ease-out .2s;
+}
+
+#lbl-archivo:hover{
+    border-color: #6d767e;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.fila-seleccionada{
+    background: #1d61c9;
+}
+
+.btn-mostrar-documentos{
     background-color: #164b99;
     color: whitesmoke;
     border-radius: 50%;
@@ -44,16 +223,18 @@ th, td{
     padding: .6rem;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
-    width: 54px;
-    height: 54px;
+    width: 50px;
+    height: 50px;
+    right: 20px;
+    bottom: 40px;
     cursor: pointer;
     transition: all ease-in-out .4s;
-    right: 60px;
-    bottom: 60px;
     position: fixed;
+    opacity: 0;
+    visibility: hidden;
 }
 
-#btn-agregar-personal:hover{
+.btn-mostrar-documentos:hover{
     background-color: #1d61c9;
     transform: scale(104%); 
 }

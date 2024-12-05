@@ -1,0 +1,5 @@
+<FilesMatch "\.(php|html|htm|js|css)$">
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^.*$ /proyecto_sst_hsqe/index.php [L,R=302]
+</FilesMatch>

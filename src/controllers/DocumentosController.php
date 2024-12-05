@@ -4,9 +4,11 @@ require_once 'src/models/Categoriadocumentos.php';
 
 class DocumentosController{
     private $conn;
+    private $documentosModel;
 
     public function __construct($db) {
         $this->conn = $db;
+        $this->documentosModel = new Documentos($db);
     }
 
     // function para mostrar las categorías dentro del formulario
@@ -14,8 +16,8 @@ class DocumentosController{
     public function mostrarRegistroDocumentoForm(){
         $catModel = new Categoriadocumentos($this->conn);
         $categorias = $catModel->getCategoriaDocumentos();
-
-        include 'src/views/documentos.php';
+        return $categorias;
+        //include 'src/views/documentos.php';
     }
 
     // register
@@ -41,5 +43,13 @@ class DocumentosController{
         }
         include 'src/views/register.php';
     }
+
+    //mostrar listado de documentos
+    public function mostrarListadoDocumentos(){
+        $listaDocumentos = $this->documentosModel->getDocumentos();
+        return $listaDocumentos;
+        //include 'src/views/documentos.php';
+    }
+
 }
 ?>
