@@ -1,10 +1,8 @@
 <?php
 $hoja_de_estilos = "signin.css?v=".time();
 $titulo = "Registro de Usuarios";
-
 include "base.php";
 ?>
-<main>
     <h2>Registrar Nuevo Usuario (Vista solo disponible para administrador - jvalladares)</h2>
     <div class="form-content">
         <form action="index.php?page=registrar" id="form-register" class="form-register" method="POST">
@@ -31,6 +29,8 @@ include "base.php";
             <button type="submit" id="btn-registrar">Registrar</button>
         </form>
     </div>
+</aside>
+</div>
 </main>
 </body>
 

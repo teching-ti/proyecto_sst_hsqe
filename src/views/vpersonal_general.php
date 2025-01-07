@@ -5,11 +5,12 @@ include "base.php";
 require_once "src/controllers/TrabajadoresController.php";
 
 $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
+$listadoModalidadTrabajo = $trabajadoresController->mostrarModalidadTrabajo();
+$listadoSedes = $trabajadoresController->mostrarSede();
 
 //las opciones filtros deben ser iguales a las opciones de creación de usuario
 ?>
 
-<aside id="principal">
     <h1>Base de Datos del Personal</h1>
     <a href="#" class="btn-descargar" id="btnDescargar"><i class="fa-solid fa-download"></i></a>
     <input type="text" id="searchInput" placeholder="Buscar...">
@@ -30,12 +31,12 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
                 <th class="th-area">Área</th>
                 <th class="th-dep">Departamento</th>
                 <th class="th-cel">Celular</th>
-                <th class="th-ingreso">Fecha de Ingreso</th>
                 <th class="th-correo">Correo</th>
+                <th class="th-modalidad">Modalidad</th>
+                <th class="th-sede">Sede</th>
                 <th class="th-contrato">Tipo de Contrato</th>
                 <th class="th-telefono">Teléfono</th>
             </tr>
-            <!-- style="display: none;" -->
         </thead>
         <tbody id="tableBody">
             <?php 
@@ -46,7 +47,7 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
                     <td style="display: none;"><?php echo htmlspecialchars($trabajador['activo']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['activo'] ? 'Activo' : 'Cesado'); ?></td> <!-- activo o cesado -->
                     <td style="display: none;"><?php echo htmlspecialchars($trabajador['id_tipo']) ?></td>
-                    <td style="display: none;"><?php echo htmlspecialchars($trabajador['id_tipo']==1 ? "Administrativo" : "Operativo")  ?></td> <!-- Administrativo u operativo -->
+                    <td style="display: none;"><?php echo htmlspecialchars($trabajador['id_tipo']== 1 ? "Administrativo" : "Operativo")  ?></td> <!-- Administrativo u operativo -->
                     <td><?php echo htmlspecialchars($trabajador['apellidos']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['nombres']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['id']); ?></td>
@@ -54,10 +55,11 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
                     <td><?php echo htmlspecialchars($trabajador['area']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['departamento']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['celular']); ?></td>
-                    <td><?php echo htmlspecialchars($trabajador['fecha_ingreso']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['correo']); ?></td>
+                    <td modalidad-id="<?= $trabajador['modalidad_id']?>"><?php echo htmlspecialchars($trabajador['modalidad_nombre']); ?></td>
+                    <td sede-id="<?= $trabajador['sede_id']?>"><?php echo htmlspecialchars($trabajador['sede_nombre']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['tipo_contrato']); ?></td>
-                    <td><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
+                    <td style="display: none;"><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -92,30 +94,35 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
             <input type="text" id="cargo" name="cargo" placeholder="Cargo..." required>
             <select name="area" id="area" required>
                 <option disabled selected>Área</option>
+                <option value="Administración">Administración</option>
+                <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
+                <option value="Contabilidad">Contabilidad</option>
+                <option value="Gerencia General">Gerencia General</option>
+                <option value="Gestión Energética">Gestión Energética</option>
+                <option value="Gestión Humana">Gestión Humana</option>
+                <option value="HSQE">HSQE</option>
+                <option value="ID&QA">ID&QA</option>
+                <option value="Legal">Legal</option>
+                <option value="Logística y Procurement">Logística y Procurement</option>
+                <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                <option value="Planeamiento y Control">Planeamiento y Control</option>
+                <option value="Proyectos">Proyectos</option>
+                <option value="Tecnologías de la Información">Tecnologías de la Información</option>
+            </select>
+             <select name="departamento" id="departamento" required>
+                <option disabled selected>Departamento</option>
                 <option value="Administración y Finanzas">Administración y Finanzas</option>
                 <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
                 <option value="Gerencia General">Gerencia General</option>
                 <option value="HSQE">HSQE</option>
                 <option value="ID&QA">ID&QA</option>
                 <option value="Legal">Legal</option>
+                <option value="Logística y Procurement">Logística y Procurement</option>
+                <option value="Marketing y Publicidad">Marketing y Publicidad</option>
                 <option value="Operaciones y Proyectos">Operaciones y Proyectos</option>
                 <option value="Planeamiento y Control">Planeamiento y Control</option>
-            </select>
-             <select name="departamento" id="departamento" required>
-                <option disabled selected>Departamento</option>
-                <option value="Administración">Administración</option>
-                <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
-                <option value="Gerencia General">Gerencia General</option>
-                <option value="Gestión Energética">Gestión Energética</option>
-                <option value="HSQE">HSQE</option>
-                <option value="ID&QA">ID&QA</option>
-                <option value="Legal">Legal</option>
-                <option value="Planeamiento y Control">Planeamiento y Control</option>
-                <option value="Proyectos">Proyectos</option>
              </select>
             <div>
-                <label for="fecha_ingreso">Ingreso</label>
-                <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="22/11/2024" required>
                 <input type="text" id="estado" name="estado" placeholder="Estado">
                 <!--Evaluar ya que depende de lo que esté activo, se podría usar para dar por eliminado a un usuario -->
             </div>
@@ -124,19 +131,41 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
         <div class="form-containers">
             <div>
                 <select id="activo" name="activo" required>
-                    <option disabled selected>Activo/ Inactivo</option>
-                    <option value="1">Activo</option>
+                    <option disabled>Activo/ Inactivo</option>
+                    <option value="1" selected>Activo</option>
                     <option value="0">Inactivo</option>
                 </select>
                 <input id="celular" name="celular" placeholder="Celular...">
             </div>
-            <input id="correo" name="correo" placeholder="Correo..." required>
+            <div>
+                <label>Correo<input id="correo" name="correo" placeholder="sup@teching.com.pe..." required></label>
+                <label>Fecha de ingreso <input type="date" id="fecha_ingreso" name="fecha_ingreso" min="1900-01-01" max="2200-12-31"></label>
+                
+            </div>
+            
             <div>
                 <input id="tipo_contrato" name="tipo_contrato" placeholder="Tipo de Contrato..." required>
                 <input id="telefono" name="telefono" type="text" placeholder="Teléfono">
             </div>
+            <div>
+                <label>Motivo<textarea name="motivo" id="motivo"></textarea></label>
+            </div>
+            <div>
+                <select id="modalidad" name="modalidad" required>
+                    <option selected disabled>Modalidad</option>
+                    <?php foreach ($listadoModalidadTrabajo as $e) {?>
+                        <option value="<?=$e['id']?>"><?= $e['nombre']?></option>
+                    <?php } ?>
+                </select>
+                <select id="sede" name="sede" required>
+                    <option selected disabled>Sede</option>
+                    <?php foreach ($listadoSedes as $e) { ?>
+                        <option value="<?=$e['id']?>"><?=$e['nombre']?></option>    
+                    <?php }?>
+                </select>
+            </div>
         </div>
-
+        
         <button type="submit" id="btn_insertar_trabajador">Guardar <i class="fa-regular fa-floppy-disk"></i></button>
     </form>
 </div>
@@ -148,13 +177,11 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
             <p>Editar Trabajador</p>
             <i class="fa-regular fa-circle-xmark fa-2xl" id="cerrar-editar-modal"></i>
         </div>
-        <div class="form-section">
+        <div class="form-edit-section">
             <div>
                 <label for="edit-activo">Estado</label>
                 <select id="edit-activo" name="edit-activo" required>
-                    <option disabled selected>Activo/ Inactivo</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
+                    <option value="1" selected>Activo</option>
                 </select>
             </div>
             <div>
@@ -185,29 +212,35 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
             <div>
                 <label for="edit-area">Área: </label>
                 <select name="edit-area" id="edit-area" required>
+                    <option value="Administración">Administración</option>
+                    <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
+                    <option value="Contabilidad">Contabilidad</option>
+                    <option value="Gerencia General">Gerencia General</option>
+                    <option value="Gestión Energética">Gestión Energética</option>
+                    <option value="Gestión Humana">Gestión Humana</option>
+                    <option value="HSQE">HSQE</option>
+                    <option value="ID&QA">ID&QA</option>
+                    <option value="Legal">Legal</option>
+                    <option value="Logística y Procurement">Logística y Procurement</option>
+                    <option value="Marketing y Publicidad">Marketing y Publicidad</option>
+                    <option value="Planeamiento y Control">Planeamiento y Control</option>
+                    <option value="Proyectos">Proyectos</option>
+                    <option value="Tecnologías de la Información">Tecnologías de la Información</option>
+                </select>
+            </div>
+            <div>
+                <label for="edit-departamento">Departamento: </label>
+                <select name="edit-departamento" id="edit-departamento" required>
                     <option value="Administración y Finanzas">Administración y Finanzas</option>
                     <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
                     <option value="Gerencia General">Gerencia General</option>
                     <option value="HSQE">HSQE</option>
                     <option value="ID&QA">ID&QA</option>
                     <option value="Legal">Legal</option>
+                    <option value="Logística y Procurement">Logística y Procurement</option>
+                    <option value="Marketing y Publicidad">Marketing y Publicidad</option>
                     <option value="Operaciones y Proyectos">Operaciones y Proyectos</option>
                     <option value="Planeamiento y Control">Planeamiento y Control</option>
-                </select>
-            </div>
-            <div>
-                <label for="edit-departamento">Departamento: </label>
-                <select name="edit-departamento" id="edit-departamento" required>
-                    <option disabled selected>Departamento</option>
-                    <option value="Administración">Administración</option>
-                    <option value="Comercial y Licitaciones">Comercial y Licitaciones</option>
-                    <option value="Gerencia General">Gerencia General</option>
-                    <option value="Gestión Energética">Gestión Energética</option>
-                    <option value="HSQE">HSQE</option>
-                    <option value="ID&QA">ID&QA</option>
-                    <option value="Legal">Legal</option>
-                    <option value="Planeamiento y Control">Planeamiento y Control</option>
-                    <option value="Proyectos">Proyectos</option>
                 </select>
             </div>
         </div>
@@ -221,24 +254,35 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
                 <label for="edit-correo">Correo:</label>
                 <input type="text" id="edit-correo" name="edit-correo">
             </div>
-            <div>
-                <label for="edit-telefono">Telefono:</label>
-                <input type="text" id="edit-telefono" name="edit-telefono">
-        
-            </div>
+
         </div>
-        <div class="form-section">
-            <div>
-                <label for="edit-fecha-ingreso">Ingreso</label>
-                <input type="date" id="edit-fecha-ingreso" name="edit-fecha-ingreso" required>
-            </div>
+        <div class="form-edit-section">
             <div>
                 <label for="edit-tipo-contrato">Tipo de Contrato</label>
                 <input id="edit-tipo-contrato" name="edit-tipo-contrato" placeholder="Tipo de Contrato..." required>
             </div>
         </div>
 
-        <button type="submit" class="btn-editar-trabajador">Guardar Cambios</button>
+        <div class="form-edit-section">
+            <div>
+                <label for="edit-modalidad">Modalidad</label>
+                <select id="edit-modalidad" name="edit-modalidad" required>
+                    <?php foreach ($listadoModalidadTrabajo as $e) {?>
+                        <option value="<?=$e['id']?>"><?= $e['nombre']?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div>
+                <label for="edit-sede">Sede</label>
+                <select id="edit-sede" name="edit-sede" required>
+                    <?php foreach ($listadoSedes as $e) { ?>
+                        <option value="<?=$e['id']?>"><?=$e['nombre']?></option>    
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-edit-trabajador">Guardar Cambios</button>
 
     </form>
 </div>
@@ -251,17 +295,25 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
   </div>
 </div>
 
-<button id="btn-agregar-trabajador" class="btn-trabajador-opcion">
-    <i class="fa-solid fa-user-plus"></i>
-</button>
+<?php if($_SESSION['rol']===1 or $_SESSION['rol']===3){
+    echo "
+    <button id='btn-agregar-trabajador' class='btn-trabajador-opcion'>
+        <i class='fa-solid fa-user-plus'></i>
+    </button>";
+}?>
 
-<button id="btn-editar-trabajador" class="btn-trabajador-opcion">
-    <i class="fa-solid fa-user-pen"></i>
-</button>
+<?php if($_SESSION['rol']===1 or $_SESSION['rol']===3){
+    echo "
+<button id='btn-editar-trabajador' class='btn-trabajador-opcion'>
+    <i class='fa-solid fa-user-pen'></i>
+</button>";
+}?>
+
 </div>
 </main>
 
 <script>
+
     // función de búsqueda
     document.getElementById("searchInput").addEventListener("input", function() {
         const filter = this.value.toLowerCase();
@@ -282,10 +334,12 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
 
         document.querySelectorAll("#tableBody tr").forEach(row => {
             if (row.style.display !== "none") {
-                const id = row.cells[4].textContent.trim();
+                const id = row.cells[7].textContent.trim();
                 idVisibles.push(id);
             }
         });
+        console.log("hola");
+        console.log(idVisibles);
 
         fetch("index.php?page=descargar", {
             method: "POST",
@@ -345,11 +399,15 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
         });
     });
 
-    document.getElementById("btn-agregar-trabajador").addEventListener("click", function(e){
-        e.preventDefault();
-        document.getElementById("modal-agregar-trabajador").classList.remove("modal-oculto");
-        document.getElementById("modal-agregar-trabajador").classList.add("modal-visible");
-    });
+    let btnAgregarTrabajador = document.getElementById("btn-agregar-trabajador");
+    
+    if(btnAgregarTrabajador){
+        btnAgregarTrabajador.addEventListener("click", function(e){
+            e.preventDefault();
+            document.getElementById("modal-agregar-trabajador").classList.remove("modal-oculto");
+            document.getElementById("modal-agregar-trabajador").classList.add("modal-visible");
+        });
+    }
 
     // funcionalidad para editar
     let filas = document.querySelectorAll("#tableBody tr");
@@ -368,8 +426,10 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
             filaSeleccionada = fila;
 
             // habilita el botón de editar
-            btnEditarTrabajador.style.opacity = "1";
-            btnEditarTrabajador.style.visibility = "visible";
+            if(btnEditarTrabajador){
+                btnEditarTrabajador.style.opacity = "1";
+                btnEditarTrabajador.style.visibility = "visible";
+            }
         });
     });
     
@@ -378,28 +438,30 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
     let formEditarTrabajador = document.getElementById("form-editar-trabajador");
 
     // activar modal tras presional el btn de editar usuario
-    btnEditarTrabajador.addEventListener("click", function () {
-        if (filaSeleccionada) {
-            let id = filaSeleccionada.getAttribute("data-id");
-            let celdas = filaSeleccionada.querySelectorAll("td");
-
-            // completando lo scampos del formulario
-            document.getElementById("trabajador-id").value = id;
-            document.getElementById("edit-activo").value = celdas[1].textContent.trim();
-            document.getElementById("edit-id-tipo").value = celdas[3].textContent.trim();
-            document.getElementById("edit-nombres").value = celdas[6].textContent.trim();
-            document.getElementById("edit-apellidos").value = celdas[5].textContent.trim();
-            document.getElementById("edit-cargo").value = celdas[8].textContent.trim();
-            document.getElementById("edit-area").value = celdas[9].textContent.trim();// select
-            document.getElementById("edit-departamento").value = celdas[10].textContent.trim();
-            document.getElementById("edit-celular").value = celdas[11].textContent.trim();
-            document.getElementById("edit-fecha-ingreso").value = celdas[12].textContent.trim();
-            document.getElementById("edit-correo").value = celdas[13].textContent.trim();
-            document.getElementById("edit-tipo-contrato").value = celdas[14].textContent.trim();
-            document.getElementById("edit-telefono").value = celdas[15].textContent.trim();
-            modalEditar.classList.add("modal-activo");
-        }
-    });
+    if(btnEditarTrabajador){
+        btnEditarTrabajador.addEventListener("click", function () {
+            if (filaSeleccionada) {
+                let id = filaSeleccionada.getAttribute("data-id");
+                let celdas = filaSeleccionada.querySelectorAll("td");
+                
+                // completando lo scampos del formulario
+                document.getElementById("trabajador-id").value = id;
+                document.getElementById("edit-activo").value = celdas[1].textContent.trim();
+                document.getElementById("edit-id-tipo").value = celdas[3].textContent.trim();
+                document.getElementById("edit-nombres").value = celdas[6].textContent.trim();
+                document.getElementById("edit-apellidos").value = celdas[5].textContent.trim();
+                document.getElementById("edit-cargo").value = celdas[8].textContent.trim();
+                document.getElementById("edit-area").value = celdas[9].textContent.trim();
+                document.getElementById("edit-departamento").value = celdas[10].textContent.trim();
+                document.getElementById("edit-celular").value = celdas[11].textContent.trim();
+                document.getElementById("edit-correo").value = celdas[12].textContent.trim();
+                document.getElementById("edit-tipo-contrato").value = celdas[15].textContent.trim();
+                document.getElementById("edit-modalidad").value = celdas[13].getAttribute("modalidad-id");
+                document.getElementById("edit-sede").value = celdas[14].getAttribute("sede-id");
+                modalEditar.classList.add("modal-activo");
+            }
+        });
+    }
 
     // cerrar el modal de edición
     btnCerrarModal.addEventListener("click", function () {
@@ -419,14 +481,14 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
         let area = document.getElementById("edit-area").value;
         let departamento = document.getElementById("edit-departamento").value;
         let celular = document.getElementById("edit-celular").value;
-        let fecha_ingreso = document.getElementById("edit-fecha-ingreso").value;
         let correo = document.getElementById("edit-correo").value;
         let tipo_contrato = document.getElementById("edit-tipo-contrato").value;
-        let telefono = document.getElementById("edit-telefono").value;
+        let modalidad = document.getElementById("edit-modalidad").value;
+        let sede = document.getElementById("edit-sede").value;
 
         fetch("index.php?page=editar_trabajador", {
             method: "POST",
-            body: JSON.stringify({ id, activo, id_tipo, nombres, apellidos, cargo, area, departamento, celular, fecha_ingreso, correo, tipo_contrato, telefono}),
+            body: JSON.stringify({ id, activo, id_tipo, nombres, apellidos, cargo, area, departamento, celular, correo, tipo_contrato, modalidad, sede}),
             headers: { "Content-Type": "application/json" }
         })
         .then(response => response.json())
@@ -437,12 +499,10 @@ $listadoPersonal = $trabajadoresController->mostrarTrabajadores();
             const btnAceptar = document.getElementById("modal-aceptar");
 
             if (data.success) {
-                //alert("Trabajador actualizado con éxito.");
                 mensaje.textContent = "Trabajador actualizado con éxito";
                 //location.reload();
             } else {
                 mensaje.textContent = "Error al actualizar datos del trabajador"
-                //alert("Error al actualizar el trabajador.");
             }
 
             modal.style.display = "block";

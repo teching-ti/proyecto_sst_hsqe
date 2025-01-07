@@ -42,7 +42,6 @@ class UserController {
         include 'src/views/register.php';
     }
 
-    // login de usuarios, aún en proceso
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -55,13 +54,14 @@ class UserController {
                 $_SESSION['usuario'] = $user->usuario;
                 $_SESSION['nombres'] = $user->nombres;
                 $_SESSION['apellidos'] = $user->apellidos;
-                header('Location: index.php?page=inicio');
+                $_SESSION['rol'] = $user->rol;
+                //header('Location: index.php?page=inicio');
+                header('Location: inicio');
                 exit;
             } else {
-                echo 'Usuario o contraseña incorrectos';
+                echo '<script>alert("Datos incorrectos")</script>';
             }
         }
-
         include 'src/views/login.php';
     }
 

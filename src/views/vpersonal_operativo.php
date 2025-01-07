@@ -6,8 +6,9 @@ require_once "src/controllers/TrabajadoresController.php";
 
 $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
 ?>
-<aside id="principal">
+
     <h1>Listado de Personal Operativo</h1>
+    <input type="text" id="searchInput" placeholder="Buscar...">
     <table class="tb-principal">
         <thead>
             <tr>
@@ -20,15 +21,14 @@ $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
                 <th class="th-datos-personales">Área</th>
                 <th class="th-datos-personales">Departamento</th>
                 <th>Celular</th>
-                <th class="th-datos-personales">Fecha de Ingreso</th>
                 <th>Correo</th>
                 <th>Tipo de Contrato</th>
-                <th>Telefono</th>
-                <th>Estado</th>
+                <th class='th-telefono'>Telefono</th>
+                <th class='th-estado'>Estado</th>
                 <!-- columnas de Documentos -->
                 <?php if (!empty($listadoPersonalOperativo)): ?>
                     <?php foreach (array_keys($listadoPersonalOperativo[0]) as $col): ?>
-                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'fecha_ingreso', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
+                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
                             <th class="th-documentos"><?php echo htmlspecialchars($col); ?></th>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -50,14 +50,13 @@ $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
                     <td><?php echo htmlspecialchars($trabajador['area']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['departamento']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['celular']); ?></td>
-                    <td><?php echo htmlspecialchars($trabajador['fecha_ingreso']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['correo']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['tipo_contrato']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['estado']); ?></td>
                     <!-- columnas de Documentos -->
                     <?php foreach ($trabajador as $col => $value): ?>
-                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'fecha_ingreso', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
+                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
                         <?php 
                         $documento = json_decode($value, true); 
                         $archivo = $documento['archivo'] ?? null;
@@ -132,6 +131,19 @@ $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
 </main>
 
 <script>
+    // función de búsqueda
+    document.getElementById("searchInput").addEventListener("input", function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#tableBody tr");
+
+        rows.forEach(row => {
+            // convierte el texto de la fila en un solo string para buscar coincidencias en cualquier columna
+            const rowText = row.textContent.toLowerCase();
+            // muestra u oculta la fila según si coincide o no con el filtro
+            row.style.display = rowText.includes(filter) ? "" : "none";
+        });
+    });
+
     const inputArchivo = document.getElementById('archivo');
     const textoArchivo = document.getElementById('texto-archivo-seleccionado');
 

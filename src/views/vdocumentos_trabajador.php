@@ -20,7 +20,7 @@ foreach ($listadoDocumentosPersonal as $doc) {
 }
 
 ?>
-<aside id="principal">
+
     <h2 class="nombre-trabajador">Documentos - <?= htmlspecialchars($nombreTrabajador) ?></h2>
     <?php
     // Agrupar documentos por tipo
@@ -40,7 +40,7 @@ foreach ($listadoDocumentosPersonal as $doc) {
         foreach ($documentosAgrupados as $id_documento => $documentos) {
             $nombre_documento = isset($nombresDocumentos[$id_documento]) ? $nombresDocumentos[$id_documento] : "Desconocido";
             echo "<div class='documento-conenedor'>";
-            echo "<h3 class='nombre-documento'>" . htmlspecialchars($nombre_documento) . "</h3>";
+            echo "<h4 class='nombre-documento'>" . htmlspecialchars($nombre_documento) . "</h4>";
             echo "<table>";
             echo "<thead>";
             echo "<tr>";

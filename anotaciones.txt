@@ -1,4 +1,18 @@
-4_12 => Agregar Listado general de documentos por usuario
+
+27/12/2024
+para el nuevo gráfico se agregaró código a:
+
+- TrabajadoresController.php
+- Trabajadores.php
+- index
+- main.php
+- incio.css
+
+
+23122024_Agregar modalidad y sede a campos de editar. (El front esta corriendo, se debe agregar al controlador y al modelo)... ok
+23122024_Agregar la opción de cambiarle el nombre a una sede y agregar más sedes... Pendiente
+
+Tabla separada, movimiento de los trabajadores
 
 /*** Para crear tabla de historial de acciones
 tabla_historial.
@@ -8,9 +22,9 @@ accion.
 fecha.
 ***/
 
-/* Credenciales 
-jvalladares
-jiVP+-23
+/* Credenciales
+jvalladares 
+jiVP+-23 
 
 - avillanueva
 - lavelllaneda

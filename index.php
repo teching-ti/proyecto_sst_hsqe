@@ -38,10 +38,16 @@ $paginas_protegidas = [
     'descargar'
 ];
 
+// hace que si un usuario intenta acceder a una ruta protegida, sea llevado al login
 if (in_array($page, $paginas_protegidas) && !$usuario_logueado) {
     //header('Location: /proyecto_sst_hsqe/login');
     header('Location: ' . BASE_URL . 'login');
     exit;
+}
+
+// se evalúa la opción de revisar primero los roles antes de dar acceso
+function verificarRol($rolRequerido) {
+    return isset($_SESSION['rol']) && $_SESSION['rol'] === $rolRequerido;
 }
 
 switch ($page) {
@@ -56,8 +62,11 @@ switch ($page) {
         }
         break;
     case 'signin':
+        if(!verificarRol(1)){
+            header('Location: ' . BASE_URL . 'inicio');
+            exit;
+        }
         $userController->mostrarRegistroForm();
-        // include 'src/views/signin.php';
         break;
     case 'registrar':
         $userController->register();
@@ -77,6 +86,9 @@ switch ($page) {
         break;
     case 'documentos':
         include 'src/views/documentos.php';
+        break;
+    case 'editar_documento':
+        include 'src/views/editar_documento.php';
         break;
     case 'registrar_trabajador':
         include 'src/views/registrar_trabajador.php';
@@ -101,6 +113,12 @@ switch ($page) {
         break;
     case 'getDistribucionTrabajadores':
         $trabajadoresController->getDistribucionTrabajadores();
+        break;
+    case 'getDistribucionPresencialPorSede':
+        $trabajadoresController->getDistribucionPresencialPorSede();
+        break;
+    case 'historial_trabajadores':
+        include 'src/views/vhistorial_trabajadores.php';
         break;
     default:
         include 'src/views/error404.php';

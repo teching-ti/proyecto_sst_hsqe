@@ -19,23 +19,22 @@ main{
     padding: 0;
 }
 
-header{
+.content{
+    /* background: rgb(38,38,41);
+background: linear-gradient(225deg, rgba(38,38,41,1) 0%, rgba(56,56,64,1) 1%, rgba(0,0,0,1) 58%); */
+    background: rgb(38,38,41);
+    background: linear-gradient(212deg, rgba(38,38,41,1) 0%, rgba(56,56,68,1) 0%, rgba(14,14,14,1) 42%);
     display: flex;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background-color: #181717;
-    border-bottom: solid 2px #233d63;
+    flex: 1;
 }
 
-.content{
-    background-color: #333336;
-    display: flex;
-    flex: 1; /*Propiedad para desplegar el contenido por la página*/
+.logo{
+    width: 200px;
 }
 
 .colores{
     color: #274b69;
-    color: #233d63;
+    color: #1b3e72;
     color: #85a1c1;
     color: #c6ccd8;
     color: #3f4d63;
@@ -48,13 +47,37 @@ header{
     width: 100%;
 }
 
-.nav-aside{
+.nav-aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
     background-color: #202022;
-    width: 100%;
-    min-width: 260px;
-    max-width: 260px;
+    width: 260px;
     display: flex;
-    padding: 0 1.2rem;
+    flex-direction: column;
+    padding: 1.2rem;
+    z-index: 10;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#btn-cerrar-nav{
+    color: aliceblue;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+}
+
+#btn-cerrar-nav:hover{
+    color: rgb(202, 28, 28);
+    transform: rotate(90deg);
 }
 
 .nav-aside ul {
@@ -62,7 +85,6 @@ header{
 }
 
 .lista-enlace {
-    /*padding: 1.2rem 0;*/
     font-weight: bolder;
     cursor: pointer;
     border: none;
@@ -93,57 +115,170 @@ header{
     padding: 1.2rem 0;
 }
 
-/*
-.lista-enlace a:hover {
-    color: #85a1c1;
-}*/
+.header-responsive {
+    display: none; /* Ocultar por defecto */
+    background-color: #202022;
+    padding: 1rem;
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 15;
+}
 
-
-/* se oculta el aside por defecto en pantallas pequeñas */
-#elementos-aside{
+.header-container {
     display: flex;
-    flex-direction: column;
-    transition: all ease-in-out .6s;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-.hidden {
-    height: 0;
-    transform: translateY(-999px);
+.logo-responsive {
+    height: 40px;
 }
 
-#elementos-aside .show{
-    height: 100%;
-    display: grid;
-    place-content: center;
-    transform: translateY(0px);
-}
-
-#btn-mostrar-aside{
-    transition: all ease-in-out .6s;
+.menu-hamburguesa {
+    background: none;
+    border: none;
+    color: #c6ccd8;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
-#btn-mostrar-aside:hover{
-    transform: scale(104%);
+#principal{
+    width: 100%;
+    padding: 1rem;
+    overflow: auto;
+    margin-left: 260px;
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100vh; 
 }
 
-@media(max-width: 720px){
+#btn-mostrar-aside {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: #274b69;
+    color: #c6ccd8;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    z-index: 15;
+    display: none;
+}
 
-    .content{
-        flex-direction: column;
-    }
+/* - Personalización del Scrollbar - */
+/* ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    padding: .8rem;
+}
 
+::-webkit-scrollbar-track {
+    background: #cfcece;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(33,42,79);
+    background: linear-gradient(47deg, rgb(13, 16, 29) 0%, rgba(2,10,28,1) 49%, rgb(0, 22, 54) 100%);  
+    border-radius: 10px;
+} */
+
+/* Personalización específica para .nav-aside */
+/* .nav-aside::-webkit-scrollbar {
+    width: 10px;
+}
+
+.nav-aside::-webkit-scrollbar-thumb {
+    background: rgb(33,42,79);
+    background: linear-gradient(47deg, rgb(13, 16, 29) 0%, rgba(2,10,28,1) 49%, rgb(0, 22, 54) 100%);   
+    border-radius: 10px;
+}
+
+.nav-aside::-webkit-scrollbar-track {
+    background: #cfcece;
+    border-radius: 10px;
+} */
+
+/*Personalización específica para #principal*/
+/* #principal::-webkit-scrollbar {
+    width: 10px;
+}
+
+#principal::-webkit-scrollbar-thumb {
+    background: rgb(33,42,79);
+    background: linear-gradient(47deg, rgb(13, 16, 29) 0%, rgba(2,10,28,1) 49%, rgb(0, 22, 54) 100%);    
+    border-radius: 10px;
+}
+
+#principal::-webkit-scrollbar-track {
+    background: #cfcece;
+    border-radius: 10px;
+} */
+
+/* - FIN Personalización del Scrollbar - */
+
+
+
+@media(max-width: 1200px){
     .nav-aside{
-        position: absolute;
-        max-width: 100%;
-        justify-content: center;
-        align-items: center;
+        overflow-y: scroll;
+    }
+}
+
+@media(max-width: 800px){
+
+    .header-responsive {
+        display: flex;
+        justify-content: space-evenly;
     }
 
-    .nav-options{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    .logo{
+        visibility: hidden;
+    }
+
+    .nav-aside {
+        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100%;
+        background-color: #202022;
+        z-index: 10;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-aside.active {
+        transform: translateX(0);
+    }
+
+    #btn-cerrar-nav{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #btn-mostrar-aside {
+        display: block;
+    }
+
+    #principal{
+        margin: 0;
+    }
+
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+
+    .nav-aside::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    #principal::-webkit-scrollbar {
+        width: 4px;
     }
 }

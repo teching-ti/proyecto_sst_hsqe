@@ -9,6 +9,9 @@
 
 body{
     background-color: #333336;
+    /* background: rgb(38,38,41);
+    background: linear-gradient(212deg, rgba(38,38,41,1) 0%, rgba(56,56,68,1) 0%, rgba(14,14,14,1) 42%); */
+    height: 100vh;
 }
 
 header{
@@ -35,6 +38,7 @@ h2, h3{
 
 .form-login{
     display: flex;
+    /* background-color: #333336; */
     margin: 1rem auto;
     max-width: 340px;
     width: 340px;

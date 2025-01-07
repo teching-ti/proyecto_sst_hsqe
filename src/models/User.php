@@ -40,7 +40,7 @@ class User{
     }
 
     public function login($usuario, $password) {
-        $query = "SELECT usuario, nombres, apellidos, contrasena FROM " . $this->table . " WHERE usuario = :usuario LIMIT 1";
+        $query = "SELECT usuario, nombres, apellidos, contrasena, rol FROM " . $this->table . " WHERE usuario = :usuario LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':usuario', $usuario);
         $stmt->execute();
@@ -50,6 +50,7 @@ class User{
             $this->usuario = $row['usuario'];
             $this->nombres = $row['nombres'];
             $this->apellidos = $row['apellidos'];
+            $this->rol = $row['rol'];
             $hashed_password = $row['contrasena'];
 
             if (password_verify($password, $hashed_password)) {

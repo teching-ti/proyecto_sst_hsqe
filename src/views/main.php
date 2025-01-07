@@ -4,19 +4,23 @@ $titulo = "Inicio";
 include "base.php";
 require_once "src/controllers/TrabajadoresController.php";
 ?>
-        <aside id="principal">
             <?php if($usuario_logueado):?>
                 <p class="usuario_presente"><?= $_SESSION['nombres']; ?> <?= $_SESSION['apellidos']; ?></p>
             <?php else:?>
                 <p>No hay sesiones activas</p>
             <?php endif; ?>
 
-            <!-- <div class="grafico1">
-                <canvas id="grafico-tipo-trabajadores" class="grafico-tipo-trabajadores"></canvas>
-            </div> -->
-            <!-- <div>
+            <div class="contenedor-graficos">
+                <div class="grafico1">
+                    <canvas id="grafico-tipo-trabajadores"></canvas>
+                </div>
+                <div class="grafico2">
+                    <canvas id="grafico-presencial-sede" width="800" height="600"></canvas>
+                </div>
+            </div>
+            <div>
                 <span>Inicio</span>
-            </div> -->
+            </div>
         </aside>
     </div>
 </main>
@@ -35,7 +39,7 @@ require_once "src/controllers/TrabajadoresController.php";
 
             const total = valores.reduce((sum, val) => sum + val, 0);
 
-            // Crear gráfico
+            // crear gráfico
             new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -44,18 +48,18 @@ require_once "src/controllers/TrabajadoresController.php";
                         label: 'Distribución del Personal',
                         data: valores, // Valores dinámicos
                         backgroundColor: [
-                            'rgba(54, 162, 235, 0.6)', 
-                            'rgba(255, 99, 132, 0.6)' 
+                            'rgba(54, 117, 235, 0.6)', 
+                            'rgba(175, 189, 235, 0.6)' 
                         ],
                         borderColor: [
                             'rgba(54, 162, 235, 1)',
-                            'rgba(255, 99, 132, 1)'
+                            'rgb(207, 194, 197)'
                         ],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
+                    
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -100,6 +104,53 @@ require_once "src/controllers/TrabajadoresController.php";
             console.error('Error al cargar los datos:', error);
         });
     });
+
+
+    fetch('index.php?page=getDistribucionPresencialPorSede')
+        .then(response => response.json())
+        .then(datos => {
+            const labels = datos.map(item => item.sede);
+            const data = datos.map(item => item.cantidad_trabajadores);
+
+            const ctx = document.getElementById('grafico-presencial-sede').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Trabajadores Presenciales',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }],
+                    barPercentage: 0.4,
+                    categoryPercentage: 0.2
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'rgb(255, 255, 255)',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Trabajadores Por Sede',
+                            color: "rgb(255, 255, 255)",
+                            font: {
+                                size: 16,
+                            }
+                        },
+                    },
+                }
+            });
+        })
+        .catch(error => console.error('Error al cargar los datos:', error));
 </script>
 </body>
 </html>

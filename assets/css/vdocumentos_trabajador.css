@@ -9,12 +9,6 @@
     color: #181717;
 }
 
-#principal{
-    width: 100%;
-    padding: 1rem;
-    overflow-x: auto;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -26,6 +20,10 @@ thead{
     background: #181717;
 }
 
+tbody{
+    background: rgba(71, 71, 71, 0.4);
+}
+
 th{
     font-weight: bold;
 }
@@ -33,13 +31,12 @@ th{
 th, td{
     border: 1px solid #3f4d63;
     color: #c6ccd8;
-    padding: 4px;
+    padding: 12px 0;
     text-align: center;
-    font-size: .85rem;
 }
 
 .th-item{
-    width: 60px;
+    width: 40px;
 }
 
 .th-nombre-archivo{
@@ -53,22 +50,32 @@ th, td{
 
 .btn-documento{
     outline: none;
-    font-size: .8rem;
-    border-radius: 8px;
-    /* background: #233d63; */
+    font-size: .9rem;
+    font-weight: bolder;
+    border-radius: 4px;
     color: whitesmoke;
-    /* border: solid 1px #1d61c9; */
-    padding: 5px 8px;
+    padding: 4px 6px;
     transition: all ease-in-out .3s;
     text-decoration: none;
+    color: rgb(132, 164, 252);
 }
 
 .btn-documento:hover{
     cursor: pointer;
-    color: rgb(182, 230, 200);
-    /* box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
 .documento-conenedor{
     margin: 1rem 0 3rem 0;
+}
+
+@media(max-width: 800px){
+    
+    th, td{
+        font-size: .7rem;
+    }
+
+    .btn-documento{
+        font-size: .7rem;
+    }
 }

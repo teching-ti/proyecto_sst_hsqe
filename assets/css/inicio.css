@@ -10,12 +10,6 @@
     color: #87d205;
 }
 
-#principal{
-    width: 100%;
-    padding: 1rem;
-    overflow-x: auto;
-}
-
 .usuario_presente{
     font-weight: bold;
     color: whitesmoke;
@@ -24,21 +18,56 @@
     flex: 1;
 }
 
-.grafico-tipo-trabajadores {
-    max-width: 380px;
-    max-height: 300px;
-    padding: 1.2rem;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: .8rem;
-    border: solid 1px white;
-    color: white;
-    cursor: pointer;
+/* Contenedor de gráficos */
+.contenedor-graficos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajusta automáticamente las columnas */
+    gap: 1rem;
+    margin: 1rem auto;
+    max-width: 1000px; /* Limita el ancho total del contenedor */
 }
 
-@media(max-width: 720px){
-    #grafico-tipo-trabajadores{
-        max-width: 340px;
+/* Estilo para cada gráfico */
+.grafico1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: solid 1px white;
+    /*background-color: rgba(0, 0, 0, 0.1);*/
+}
+
+.grafico2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: solid 1px white;
+}
+
+/* Estilo común para los gráficos */
+#grafico-tipo-trabajadores {
+    max-width: 100%;
+    max-height: 300px;
+    padding: 0;
+}
+
+/* #grafico-presencial-sede{
+    max-width: 100%;
+    max-height: 300px;
+    padding: 0;
+} */
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 800px) {
+    .contenedor-graficos {
+        grid-template-columns: 1fr; /* Coloca gráficos en una sola columna */
     }
+
+    /* #grafico-presencial-sede{
+        width: 50%;
+        height: 400px;
+    } */
 }

@@ -9,17 +9,25 @@ class Trabajadores{
     }
 
     public function getTrabajadores($ids = []) {
-        // realiza consulta a base de datos
-        $query = "SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, fecha_ingreso, correo, tipo_contrato, telefono, id_tipo FROM tb_trabajadores";
+        // realiza consulta a base de datos, extraer tanto los id como los nombres de los datos que serán seleccionables,
+        // por ejemplo la modalidad y sede que serán usados de la misma forma a futuro. Considerando que también en estos casos se deberá de crear una tabla para estos cassos
+        $query = "SELECT t.activo, t.apellidos, t.nombres, t.id, t.cargo, t.area, t.departamento, t.celular, t.correo, t.tipo_contrato, t.telefono, t.id_tipo, t.modalidad as modalidad_id, t.sede as sede_id, m.nombre as modalidad_nombre, s.nombre as sede_nombre
+        FROM
+        tb_trabajadores t
+        LEFT JOIN
+        tb_modalidad_trabajo m ON t.modalidad = m.id
+        LEFT JOIN
+        tb_sede s ON t.sede = s.id"
+        ;
         
         // clásula where en caso hayan id
         if (!empty($ids)) {
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
-            $query .= " WHERE id IN ($placeholders)";
+            $query .= " WHERE t.id IN ($placeholders)";
         }
 
         // agregar order by al final
-        $query .= " ORDER BY apellidos";
+        $query .= " ORDER BY t.apellidos";
     
         // se prepara la consulta
         $stmt = $this->conn->prepare($query);
@@ -34,13 +42,29 @@ class Trabajadores{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    // mostrar modalidad de trabajo
+    public function mostrarModalidad(){
+        $catModel = new Categoriadocumentos($this->conn);
+        $categorias = $catModel->getCategoriaDocumentos();
+        return $categorias;
+        //include 'src/views/documentos.php';
+    }
+
+    // mostrar modalidad de trabajo
+    public function mostrarSede(){
+        $catModel = new Categoriadocumentos($this->conn);
+        $categorias = $catModel->getCategoriaDocumentos();
+        return $categorias;
+        //include 'src/views/documentos.php';
+    }
 
     // insertar trabajadores en la base de datos
     public function setTrabajador($datos){
         try{
-            $query = "INSERT INTO tb_trabajadores (id, apellidos, nombres, cargo, area, departamento, fecha_ingreso, id_tipo, estado, celular, correo, tipo_contrato, activo, telefono) 
+            $query = "INSERT INTO tb_trabajadores (id, apellidos, nombres, cargo, area, departamento, id_tipo, estado, celular, correo, tipo_contrato, activo, telefono, modalidad, sede) 
             VALUES 
-            (:id, :apellidos, :nombres, :cargo, :area, :departamento, :fecha_ingreso, :id_tipo, :estado, :celular, :correo, :tipo_contrato, :activo, :telefono)";
+            (:id, :apellidos, :nombres, :cargo, :area, :departamento, :id_tipo, :estado, :celular, :correo, :tipo_contrato, :activo, :telefono, :modalidad, :sede)";
             
             $smtm = $this->conn->prepare($query);
             // inserción de parámetros
@@ -50,7 +74,6 @@ class Trabajadores{
             $smtm->bindParam('cargo', $datos['cargo']);
             $smtm->bindParam('area', $datos['area']);
             $smtm->bindParam('departamento', $datos['departamento']);
-            $smtm->bindParam('fecha_ingreso', $datos['fecha_ingreso']);
             $smtm->bindParam('id_tipo', $datos['id_tipo']);
             $smtm->bindParam('estado', $datos['estado']);
             $smtm->bindParam('celular', $datos['celular']);
@@ -58,6 +81,8 @@ class Trabajadores{
             $smtm->bindParam('tipo_contrato', $datos['tipo_contrato']);
             $smtm->bindParam('activo', $datos['activo']);
             $smtm->bindParam('telefono', $datos['telefono']);
+            $smtm->bindParam('modalidad', $datos['modalidad']);
+            $smtm->bindParam('sede', $datos['sede']);
 
             $smtm->execute();
             return true;
@@ -67,12 +92,23 @@ class Trabajadores{
         }
     }
 
-    // public function getPersonalAdministrativo(){
-    //     $query = "SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, fecha_ingreso, correo, tipo_contrato, estado, telefono FROM tb_trabajadores WHERE id_tipo = 1";
-    //     $stmt = $this->conn->prepare($query);
-    //     $stmt->execute();
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
+    // funcionalidad para crear registro también en la tabla de movimiento trabajadores
+    public function registrarMovimientoLaboral($id_trabajador, $fecha, $tipo_movimiento, $motivo = null) {
+        try {
+            $query = "INSERT INTO tb_movimiento_trabajadores (id_trabajador, fecha, tipo_movimiento, motivo) 
+                      VALUES (:id_trabajador, :fecha, :tipo_movimiento, :motivo)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id_trabajador', $id_trabajador, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha', $fecha);
+            $stmt->bindParam(':tipo_movimiento', $tipo_movimiento);
+            $stmt->bindParam(':motivo', $motivo);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            error_log('Error al registrar movimiento laboral: ' . $e->getMessage());
+            return false;
+        }
+    }
 
     // función para obtener al personal administrativo
     public function getPersonalAdministrativoConDocumentos() {
@@ -103,7 +139,7 @@ class Trabajadores{
         // consulta principal incluyendo las columnas dinámicas de documentos
         $query = "
             SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, 
-                   fecha_ingreso, correo, tipo_contrato, estado, telefono,
+                   correo, tipo_contrato, estado, telefono,
                    " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores 
             WHERE id_tipo = 1";
@@ -141,7 +177,7 @@ class Trabajadores{
         // consulta principal incluyendo las columnas dinámicas de documentos
         $query = "
             SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, 
-                   fecha_ingreso, correo, tipo_contrato, estado, telefono,
+                    correo, tipo_contrato, estado, telefono,
                    " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores WHERE id_tipo = 2";
 
@@ -161,11 +197,33 @@ class Trabajadores{
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
     
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un arreglo con los resultados
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTrabajadoresPresencialesPorSede() {
+        $query = "
+            SELECT 
+                s.nombre AS sede,
+                COUNT(t.id) AS cantidad_trabajadores
+            FROM 
+                tb_trabajadores t
+            JOIN 
+                tb_modalidad_trabajo m ON t.modalidad = m.id
+            JOIN 
+                tb_sede s ON t.sede = s.id
+            WHERE 
+                t.activo = 1 AND m.nombre = 'Presencial'
+            GROUP BY 
+                s.nombre
+        ";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // modelo
-    public function actualizarTrabajador($id, $activo, $id_tipo,$nombres, $apellidos, $cargo, $area, $departamento, $celular, $fecha_ingreso, $correo, $tipo_contrato, $telefono){
+    public function actualizarTrabajador($id, $activo, $id_tipo,$nombres, $apellidos, $cargo, $area, $departamento, $celular, $correo, $tipo_contrato, $modalidad, $sede){
         try {
             $sql_check = "SELECT COUNT(*) FROM tb_trabajadores WHERE id = :id";
             $stmt_check = $this->conn->prepare($sql_check);
@@ -177,7 +235,7 @@ class Trabajadores{
                 return false;
             }
 
-            $sql = "UPDATE tb_trabajadores SET apellidos = :apellidos, nombres = :nombres,  cargo = :cargo, area = :area, departamento = :departamento, fecha_ingreso = :fecha_ingreso, id_tipo = :id_tipo, celular = :celular, correo =:correo, tipo_contrato = :tipo_contrato, activo = :activo, telefono = :telefono WHERE id = :id";
+            $sql = "UPDATE tb_trabajadores SET apellidos = :apellidos, nombres = :nombres,  cargo = :cargo, area = :area, departamento = :departamento, id_tipo = :id_tipo, celular = :celular, correo =:correo, tipo_contrato = :tipo_contrato, activo = :activo, modalidad = :modalidad, sede= :sede WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':apellidos', $apellidos);
@@ -185,13 +243,13 @@ class Trabajadores{
             $stmt->bindParam(':cargo', $cargo);
             $stmt->bindParam(':area', $area);
             $stmt->bindParam(':departamento', $departamento);
-            $stmt->bindParam(':fecha_ingreso', $fecha_ingreso);
             $stmt->bindParam(':id_tipo', $id_tipo);
             $stmt->bindParam(':celular', $celular);
             $stmt->bindParam(':correo', $correo);
             $stmt->bindParam(':tipo_contrato', $tipo_contrato);
             $stmt->bindParam(':activo', $activo);
-            $stmt->bindParam(':telefono', $telefono);
+            $stmt->bindParam(':modalidad', $modalidad);
+            $stmt->bindParam(':sede', $sede);
             
             // se tendrá que eliminar ese error log
             return $stmt->execute();
@@ -206,6 +264,24 @@ class Trabajadores{
             error_log("Error al actualizar trabajador: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function getTrabajadoresPorFecha($anio, $mes) {
+        $query = "
+            SELECT t.nombres, t.apellidos, t.cargo, t.area, t.departamento, m.fecha, m.tipo_movimiento, m.motivo 
+            FROM tb_trabajadores t
+            INNER JOIN tb_movimiento_trabajadores m ON t.id = m.id_trabajador
+            WHERE m.tipo_movimiento = 'ingreso'
+              AND YEAR(m.fecha) = :year
+              AND MONTH(m.fecha) = :month
+            ORDER BY m.fecha ASC";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':year', $anio, PDO::PARAM_INT);
+        $stmt->bindParam(':month', $mes, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

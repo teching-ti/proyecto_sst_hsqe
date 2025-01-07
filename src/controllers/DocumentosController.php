@@ -32,9 +32,6 @@ class DocumentosController{
             $documento = new Documentos($this->conn);
             
             if ($documento->registerDocuments($nombre, $catdocumento)) {
-                /*
-                    - Se deberá de substituir el uso directo de header por un cambio de ruta
-                */
                 header('Location: index.php?page=documentos');
                 exit;
             } else {
@@ -44,12 +41,16 @@ class DocumentosController{
         include 'src/views/register.php';
     }
 
+    // editar
+    public function editarDocumento($id, $nombre){
+        return $this->documentosModel->actualizarDocumento($id, $nombre);
+    }
+
     //mostrar listado de documentos
     public function mostrarListadoDocumentos(){
         $listaDocumentos = $this->documentosModel->getDocumentos();
         return $listaDocumentos;
-        //include 'src/views/documentos.php';
     }
-
+    
 }
 ?>
