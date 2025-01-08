@@ -218,6 +218,7 @@ $listadoPersonalAdministrativo = $trabajadoresController->mostrarPersonalAdminis
             if (data.success) {
                 alert('Archivo cargado correctamente.');
                 cerrarModal();
+                location.reload();
             } else {
                 alert('Hubo un error al subir el archivo.');
             }
