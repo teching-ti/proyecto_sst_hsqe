@@ -108,6 +108,12 @@ switch ($page) {
     case 'trabajadores':
         include 'src/views/vpersonal_general.php';
         break;
+    case 'trabajadores_cese':
+        include 'src/views/vbaja_trabajadores.php';
+        break;
+    case 'cesar_trabajador':
+        include 'src/views/cesar_trabajador.php';
+        break;
     case 'descargar':
         include 'src/views/descargar.php';
         break;

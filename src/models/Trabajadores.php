@@ -122,15 +122,15 @@ class Trabajadores{
         $selectDocumentos = "";
         foreach ($documentos as $doc) {
             $selectDocumentos .= "
-                (SELECT JSON_OBJECT(
+                 (SELECT JSON_OBJECT(
                     'archivo', archivo_eval,
                     'nombre_archivo', nombre_archivo,
                     'fecha', fecha_subida,
                     'doc_id', id_documento
                 ) 
                 FROM tb_doctrabajadores 
-                WHERE id_trabajador = tb_trabajadores.id 
-                  AND id_documento = {$doc['id']}
+                WHERE id_trabajador = t.id 
+                AND id_documento = {$doc['id']}
                 ORDER BY fecha_subida DESC
                 LIMIT 1
                 ) AS '{$doc['nombre']}', ";
@@ -138,11 +138,27 @@ class Trabajadores{
 
         // consulta principal incluyendo las columnas dinámicas de documentos
         $query = "
-            SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, 
-                   correo, tipo_contrato, estado, telefono,
-                   " . rtrim($selectDocumentos, ", ") . "
-            FROM tb_trabajadores 
-            WHERE id_tipo = 1";
+            SELECT 
+                t.activo, 
+                t.apellidos, 
+                t.nombres, 
+                t.id, 
+                t.cargo, 
+                t.area, 
+                t.departamento, 
+                t.celular, 
+                t.correo, 
+                t.tipo_contrato, 
+                t.estado, 
+                t.telefono, 
+                s.nombre AS sede,
+                m.nombre AS modalidad, 
+                " . rtrim($selectDocumentos, ", ") . "
+            FROM tb_trabajadores t
+            LEFT JOIN tb_sede s ON t.sede = s.id
+            LEFT JOIN tb_modalidad_trabajo m ON t.modalidad = m.id
+            WHERE t.id_tipo = 1 ORDER BY t.apellidos
+        ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -160,15 +176,15 @@ class Trabajadores{
         $selectDocumentos = "";
         foreach ($documentos as $doc) {
             $selectDocumentos .= "
-                (SELECT JSON_OBJECT(
+                 (SELECT JSON_OBJECT(
                     'archivo', archivo_eval,
                     'nombre_archivo', nombre_archivo,
                     'fecha', fecha_subida,
                     'doc_id', id_documento
                 ) 
                 FROM tb_doctrabajadores 
-                WHERE id_trabajador = tb_trabajadores.id 
-                  AND id_documento = {$doc['id']}
+                WHERE id_trabajador = t.id 
+                AND id_documento = {$doc['id']}
                 ORDER BY fecha_subida DESC
                 LIMIT 1
                 ) AS '{$doc['nombre']}', ";
@@ -176,10 +192,27 @@ class Trabajadores{
 
         // consulta principal incluyendo las columnas dinámicas de documentos
         $query = "
-            SELECT activo, apellidos, nombres, id, cargo, area, departamento, celular, 
-                    correo, tipo_contrato, estado, telefono,
-                   " . rtrim($selectDocumentos, ", ") . "
-            FROM tb_trabajadores WHERE id_tipo = 2";
+            SELECT 
+                t.activo, 
+                t.apellidos, 
+                t.nombres, 
+                t.id, 
+                t.cargo, 
+                t.area, 
+                t.departamento, 
+                t.celular, 
+                t.correo, 
+                t.tipo_contrato, 
+                t.estado, 
+                t.telefono, 
+                s.nombre AS sede,
+                m.nombre AS modalidad, 
+                " . rtrim($selectDocumentos, ", ") . "
+            FROM tb_trabajadores t
+            LEFT JOIN tb_sede s ON t.sede = s.id
+            LEFT JOIN tb_modalidad_trabajo m ON t.modalidad = m.id
+            WHERE t.id_tipo = 2 ORDER BY t.apellidos
+        ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -271,8 +304,7 @@ class Trabajadores{
             SELECT t.nombres, t.apellidos, t.cargo, t.area, t.departamento, m.fecha, m.tipo_movimiento, m.motivo 
             FROM tb_trabajadores t
             INNER JOIN tb_movimiento_trabajadores m ON t.id = m.id_trabajador
-            WHERE m.tipo_movimiento = 'ingreso'
-              AND YEAR(m.fecha) = :year
+            WHERE YEAR(m.fecha) = :year
               AND MONTH(m.fecha) = :month
             ORDER BY m.fecha ASC";
     
@@ -282,6 +314,45 @@ class Trabajadores{
         $stmt->execute();
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function setInactivoTrabajador($documento, $fechaCese, $tipoMovimiento, $motivoCese){
+        try {
+            $this->conn->beginTransaction();
+            $sql_check = "SELECT activo FROM tb_trabajadores WHERE id = :id";
+            $stmt_check = $this->conn->prepare($sql_check);
+            $stmt_check->bindParam(':id', $documento);
+            $stmt_check->execute();
+            $resultado = $stmt_check->fetch(PDO::FETCH_ASSOC);
+
+            if (!$resultado) {
+                throw new Exception("El trabajador seleccionado no existe.");
+            }
+    
+            if ($resultado['activo'] == 0) {
+                throw new Exception("No se realizó esta acción, el trabajador seleccionado ya se encontraba cesado.");
+            }
+
+            $queryUpdate = "UPDATE tb_trabajadores SET activo = 0 WHERE id = :id";
+            $stmtUpdate = $this->conn->prepare($queryUpdate);
+            $stmtUpdate->bindParam(":id", $documento);
+            $stmtUpdate->execute();
+
+            $queryMovimiento = "INSERT INTO tb_movimiento_trabajadores (id_trabajador, fecha, tipo_movimiento, motivo)
+                                    VALUES (:id_trabajador, :fecha, :tipo_movimiento, :motivo)";
+            $stmtMovimiento = $this->conn->prepare($queryMovimiento);
+            $stmtMovimiento->bindParam(":id_trabajador", $documento);
+            $stmtMovimiento->bindParam(":fecha", $fechaCese);
+            $stmtMovimiento->bindParam(":tipo_movimiento", $tipoMovimiento);
+            $stmtMovimiento->bindParam(":motivo", $motivoCese);
+            $stmtMovimiento->execute();
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            throw new Exception($e->getMessage());
+        }
     }
 }
 ?>

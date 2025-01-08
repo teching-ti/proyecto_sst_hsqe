@@ -133,7 +133,6 @@ $listadoSedes = $trabajadoresController->mostrarSede();
                 <select id="activo" name="activo" required>
                     <option disabled>Activo/ Inactivo</option>
                     <option value="1" selected>Activo</option>
-                    <option value="0">Inactivo</option>
                 </select>
                 <input id="celular" name="celular" placeholder="Celular...">
             </div>

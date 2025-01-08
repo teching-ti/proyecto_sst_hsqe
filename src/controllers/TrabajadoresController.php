@@ -83,5 +83,13 @@ class TrabajadoresController{
         return $this->trabajadoresModel->getTrabajadoresPorFecha($anio, $mes);
     }
 
+    public function cesarTrabajador($documento, $fechaCese, $tipoMovimiento, $motivoCese) {
+        try {
+            return $this->trabajadoresModel->setInactivoTrabajador($documento, $fechaCese, $tipoMovimiento, $motivoCese);
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
 }
 ?>

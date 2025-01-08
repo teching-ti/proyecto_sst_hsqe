@@ -23,12 +23,14 @@ $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
                 <th>Celular</th>
                 <th>Correo</th>
                 <th>Tipo de Contrato</th>
+                <th>Sede</th>
+                <th>Modalidad</th>
                 <th class='th-telefono'>Telefono</th>
                 <th class='th-estado'>Estado</th>
                 <!-- columnas de Documentos -->
                 <?php if (!empty($listadoPersonalOperativo)): ?>
                     <?php foreach (array_keys($listadoPersonalOperativo[0]) as $col): ?>
-                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
+                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'sede', 'modalidad', 'estado', 'telefono'])): ?>
                             <th class="th-documentos"><?php echo htmlspecialchars($col); ?></th>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -52,11 +54,13 @@ $listadoPersonalOperativo = $trabajadoresController->mostrarPersonalOperativo();
                     <td><?php echo htmlspecialchars($trabajador['celular']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['correo']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['tipo_contrato']); ?></td>
-                    <td><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
-                    <td><?php echo htmlspecialchars($trabajador['estado']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['sede']); ?></td>
+                    <td><?php echo htmlspecialchars($trabajador['modalidad']); ?></td>
+                    <td style="display: none;"><?php echo htmlspecialchars($trabajador['telefono']); ?></td>
+                    <td style="display: none;"><?php echo htmlspecialchars($trabajador['estado']); ?></td>
                     <!-- columnas de Documentos -->
                     <?php foreach ($trabajador as $col => $value): ?>
-                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono'])): ?>
+                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono', 'sede', 'modalidad'])): ?>
                         <?php 
                         $documento = json_decode($value, true); 
                         $archivo = $documento['archivo'] ?? null;

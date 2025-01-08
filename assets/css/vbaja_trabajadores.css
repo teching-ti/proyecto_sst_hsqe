@@ -1,0 +1,77 @@
+h1{
+    color: #c6ccd8;
+    margin: 1rem 0;
+}
+
+#form-cesar-trabajador{
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    gap: 1.6rem;
+    /* padding: 1.2rem; */
+    background-color: #3d3d42;
+    padding: 20px;
+    border-radius: 1rem;
+    width: 26%;
+    min-width: 300px;
+    border: solid 2px #233d63;
+    color: whitesmoke;
+}
+
+#form-cesar-trabajador div{
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.elemento-form{
+    width: 100%;
+    margin: .2rem 0;
+    font-size: .9rem;
+    padding: .4rem;
+    color: aliceblue;
+    border-radius: .3rem;
+    border: solid 1px rgb(85, 84, 84);
+    outline: none;
+    transition: all ease-in-out .1s;
+    background: none;
+}
+
+#motivo_cese{
+    width: 100%;
+    margin: .2rem 0;
+    font-size: .9rem;
+    padding: .8rem;
+    color: aliceblue;
+    border-radius: .3rem;
+    border: solid 1px rgb(85, 84, 84);
+    outline: none;
+    transition: all ease-in-out .1s;
+    background: none;
+    resize: none;
+}
+
+#motivo_cese:focus, .elemento-form:focus{
+    background: #333336;
+    outline: 3px solid rgba(108, 156, 228, 0.8);
+}
+
+#btn-cesar-trabajador{
+    margin: 0 auto;
+    width: fit-content;
+    padding: .6rem;
+    font-size: .9rem;
+    font-weight: bold;
+    border-radius: .4rem;
+    border: solid 1px rgb(85, 84, 84);
+    background-color: #333330;
+    outline: none;
+    color: aliceblue;
+    cursor: pointer;
+    transition: all ease-in-out .1s;
+}
+
+#btn-cesar-trabajador:hover{
+    background-color: #1d1d1f;
+    outline: 4px solid #3f5d8a;
+}
