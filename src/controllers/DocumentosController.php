@@ -22,7 +22,7 @@ class DocumentosController{
 
     // register
     public function register() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // recibiendo los datos del formulario
             $nombre = $_POST['nombre'];

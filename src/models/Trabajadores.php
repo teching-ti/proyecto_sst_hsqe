@@ -223,8 +223,8 @@ class Trabajadores{
         $query = "
             SELECT t.nombre, COUNT(tr.id) AS total
             FROM tb_tipotrabajadores t
-            LEFT JOIN tb_trabajadores tr ON t.id = tr.id_tipo
-            GROUP BY t.nombre
+            LEFT JOIN tb_trabajadores tr ON t.id = tr.id_tipo AND tr.activo = 1
+            GROUP BY t.nombre;
         ";
         
         $stmt = $this->conn->prepare($query);
@@ -353,6 +353,16 @@ class Trabajadores{
             $this->conn->rollBack();
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function getIngresosUltimosMeses() {
+        $query = "
+            SELECT DATE_FORMAT(fecha, '%Y-%m') AS mes_anio, COUNT(*) AS cantidad_ingresos FROM tb_movimiento_trabajadores WHERE tipo_movimiento = 'ingreso' AND fecha >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m-01') GROUP BY mes_anio ORDER BY mes_anio DESC LIMIT 6;
+        ";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

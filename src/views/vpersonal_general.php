@@ -294,14 +294,14 @@ $listadoSedes = $trabajadoresController->mostrarSede();
   </div>
 </div>
 
-<?php if($_SESSION['rol']===1 or $_SESSION['rol']===3){
+<?php if($_SESSION['rol']==1 or $_SESSION['rol']==3){
     echo "
     <button id='btn-agregar-trabajador' class='btn-trabajador-opcion'>
         <i class='fa-solid fa-user-plus'></i>
     </button>";
 }?>
 
-<?php if($_SESSION['rol']===1 or $_SESSION['rol']===3){
+<?php if($_SESSION['rol']==1 or $_SESSION['rol']==3){
     echo "
 <button id='btn-editar-trabajador' class='btn-trabajador-opcion'>
     <i class='fa-solid fa-user-pen'></i>

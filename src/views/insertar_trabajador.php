@@ -8,7 +8,7 @@ $conn = $database->connect();
 $trabajadoresController = new TrabajadoresController($conn);
 
 // primero se debe verificar si los datos han sido enviados
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $horaZona  = new DateTimeZone('America/Lima');
     $fechaHoraActual = new DateTime('now', $horaZona);
     $fecha = $fechaHoraActual->format('Y-m-d H:i:s');

@@ -52,14 +52,14 @@
                     <li class="lista-enlace"><a href="personal_administrativo"><i class="fa-solid fa-list"></i> Personal Administrativo</a></li>
                     <li class="lista-enlace"><a href="personal_operativo"><i class="fa-solid fa-list"></i> Personal Operativo</a></li>
                     <?php
-                        if($_SESSION['rol']===1 or $_SESSION['rol']===3){
+                        if($_SESSION['rol']==1 or $_SESSION['rol']==3){
                         echo "<li class='lista-enlace'><a href='trabajadores_cese' target='_blank'><i class='fa-solid fa-user-minus'></i> Cese de Personal</a></li>";
                         }
                     ?>
                     <li class="lista-enlace"><a href="historial_trabajadores"><i class="fa-solid fa-user-clock"></i> Historial del Personal</a></li>
                     <li class="lista-enlace"><a href="documentos"><i class="fa-regular fa-folder-open"></i> Documentos</a></li>
                     <?php
-                        if($_SESSION['rol']===1){
+                        if($_SESSION['rol']==1){
                         echo "<li class='lista-enlace'><a href='signin'><i class='fa-solid fa-user-plus'></i> Registrar usuario</a></li>";
                         }
                     ?>

@@ -74,6 +74,11 @@ class TrabajadoresController{
         $datos = $this->trabajadoresModel->getTrabajadoresPresencialesPorSede();
         echo json_encode($datos);
     }
+
+    public function getIngresosUltimosMeses() {
+        $datos = $this->trabajadoresModel->getIngresosUltimosMeses();
+        echo json_encode($datos);
+    }
     
     public function editarTrabajador($id, $activo, $id_tipo,$nombres, $apellidos, $cargo, $area, $departamento, $celular, $correo, $tipo_contrato, $modalidad, $sede) {
         return $this->trabajadoresModel->actualizarTrabajador($id, $activo, $id_tipo,$nombres, $apellidos, $cargo, $area, $departamento, $celular, $correo, $tipo_contrato, $modalidad, $sede);

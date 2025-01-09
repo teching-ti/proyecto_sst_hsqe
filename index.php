@@ -47,7 +47,7 @@ if (in_array($page, $paginas_protegidas) && !$usuario_logueado) {
 
 // se evalúa la opción de revisar primero los roles antes de dar acceso
 function verificarRol($rolRequerido) {
-    return isset($_SESSION['rol']) && $_SESSION['rol'] === $rolRequerido;
+    return isset($_SESSION['rol']) && $_SESSION['rol'] == $rolRequerido;
 }
 
 switch ($page) {
@@ -55,7 +55,7 @@ switch ($page) {
         include 'src/views/main.php';
         break;
     case 'login':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userController->login();
         } else {
             include 'src/views/login.php';
@@ -122,6 +122,9 @@ switch ($page) {
         break;
     case 'getDistribucionPresencialPorSede':
         $trabajadoresController->getDistribucionPresencialPorSede();
+        break;
+    case 'getUltimosIngresos':
+        $trabajadoresController->getIngresosUltimosMeses();
         break;
     case 'historial_trabajadores':
         include 'src/views/vhistorial_trabajadores.php';

@@ -2,7 +2,7 @@
 require_once 'src/config/Database.php';
 require_once 'src/controllers/DocumentosController.php';
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'],'application/json') !== false){
 
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);

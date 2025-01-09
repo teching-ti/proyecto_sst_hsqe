@@ -17,7 +17,7 @@ class UserController {
     }
 
     public function register() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // recibiendo los datos del formulario
             $usuario = $_POST['usuario'];
@@ -43,7 +43,7 @@ class UserController {
     }
 
     public function login() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $usuario = $_POST['usuario'];
             $contrasena = $_POST['contrasena'];
