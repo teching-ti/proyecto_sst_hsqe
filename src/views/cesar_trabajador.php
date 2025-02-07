@@ -1,6 +1,6 @@
 <?php
 require_once './src/controllers/TrabajadoresController.php';
-require_once './src/config/database.php';
+require_once './src/config/Database.php';
 
 // instancia del controlador
 $database = new Database();
