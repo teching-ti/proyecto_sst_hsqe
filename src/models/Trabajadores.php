@@ -8,37 +8,112 @@ class Trabajadores{
         $this->conn = $conn;
     }
 
-    public function getTrabajadores($ids = []) {
-        // realiza consulta a base de datos, extraer tanto los id como los nombres de los datos que serán seleccionables,
-        // por ejemplo la modalidad y sede que serán usados de la misma forma a futuro. Considerando que también en estos casos se deberá de crear una tabla para estos cassos
-        $query = "SELECT t.activo, t.apellidos, t.nombres, t.id, t.cargo, t.area, t.departamento, t.celular, t.correo, t.tipo_contrato, t.telefono, t.id_tipo, t.modalidad as modalidad_id, t.sede as sede_id, m.nombre as modalidad_nombre, s.nombre as sede_nombre
-        FROM
-        tb_trabajadores t
-        LEFT JOIN
-        tb_modalidad_trabajo m ON t.modalidad = m.id
-        LEFT JOIN
-        tb_sede s ON t.sede = s.id"
-        ;
+    // v1
+    // public function getTrabajadores($ids = []) {
+    //     // realiza consulta a base de datos, extraer tanto los id como los nombres de los datos que serán seleccionables,
+    //     // por ejemplo la modalidad y sede que serán usados de la misma forma a futuro. Considerando que también en estos casos se deberá de crear una tabla para estos cassos
+    //     $query = "SELECT t.activo, t.apellidos, t.nombres, t.id, t.cargo, t.area, t.departamento, t.celular, t.correo, t.tipo_contrato, t.telefono, t.id_tipo, t.modalidad as modalidad_id, t.sede as sede_id, m.nombre as modalidad_nombre, s.nombre as sede_nombre, mv.fecha as fecha_ingreso
+    //     FROM
+    //     tb_trabajadores t
+    //     LEFT JOIN
+    //     tb_modalidad_trabajo m ON t.modalidad = m.id
+    //     LEFT JOIN
+    //     tb_sede s ON t.sede = s.id
+    //     LEFT JOIN
+    //     tb_movimiento_trabajadores mv ON t.id = mv.id_trabajador"
+    //     ;
+
+    //     // clásula where en caso hayan id
+    //     if (!empty($ids)) {
+    //         $placeholders = implode(',', array_fill(0, count($ids), '?'));
+    //         $query .= " WHERE t.id IN ($placeholders)";
+    //     }
+
+    //     // agregar order by al final
+    //     $query .= " ORDER BY t.apellidos";
+    
+    //     // se prepara la consulta
+    //     $stmt = $this->conn->prepare($query);
         
-        // clásula where en caso hayan id
+    //     // se vinculan los parámetros siempre y cuando hayan IDS presentes en la consulta
+    //     if (!empty($ids)) {
+    //         foreach ($ids as $k => $id) {
+    //             $stmt->bindValue($k + 1, $id, PDO::PARAM_INT);
+    //         }
+    //     }
+        
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+
+
+    //v2
+    public function getTrabajadores($ids = []) {
+        // Consulta ajustada para obtener solo el ingreso más reciente por trabajador
+        $query = "
+            SELECT 
+                t.activo, 
+                t.apellidos, 
+                t.nombres, 
+                t.id, 
+                t.cargo, 
+                t.area, 
+                t.departamento, 
+                t.celular, 
+                t.correo, 
+                t.tipo_contrato, 
+                t.telefono, 
+                t.id_tipo, 
+                t.modalidad AS modalidad_id, 
+                t.sede AS sede_id, 
+                m.nombre AS modalidad_nombre, 
+                s.nombre AS sede_nombre, 
+                mv.fecha AS fecha_ingreso
+            FROM 
+                tb_trabajadores t
+            LEFT JOIN 
+                tb_modalidad_trabajo m ON t.modalidad = m.id
+            LEFT JOIN 
+                tb_sede s ON t.sede = s.id
+            LEFT JOIN (
+                -- Subconsulta para obtener solo el ingreso más reciente
+                SELECT 
+                    id_trabajador, 
+                    fecha
+                FROM (
+                    SELECT 
+                        id_trabajador, 
+                        fecha,
+                        ROW_NUMBER() OVER (PARTITION BY id_trabajador ORDER BY fecha DESC) AS rn
+                    FROM 
+                        tb_movimiento_trabajadores
+                    WHERE 
+                        tipo_movimiento = 'ingreso'
+                ) AS sub
+                WHERE 
+                    rn = 1
+            ) mv ON t.id = mv.id_trabajador
+        ";
+    
+        // Cláusula WHERE en caso de que haya IDs
         if (!empty($ids)) {
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
             $query .= " WHERE t.id IN ($placeholders)";
         }
-
-        // agregar order by al final
+    
+        // Agregar ORDER BY al final
         $query .= " ORDER BY t.apellidos";
     
-        // se prepara la consulta
+        // Preparar la consulta
         $stmt = $this->conn->prepare($query);
-        
-        // se vinculan los parámetros siempre y cuando hayan IDS presentes en la consulta
+    
+        // Vincular parámetros si hay IDs
         if (!empty($ids)) {
             foreach ($ids as $k => $id) {
                 $stmt->bindValue($k + 1, $id, PDO::PARAM_INT);
             }
         }
-        
+    
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -110,15 +185,14 @@ class Trabajadores{
         }
     }
 
-    // función para obtener al personal administrativo
     public function getPersonalAdministrativoConDocumentos() {
-        // se obtienen los nombres de los documentos asociados a la categoría 1
+        // Obtener los nombres de los documentos asociados a la categoría 1
         $docQuery = "SELECT id, nombre FROM tb_documentos WHERE cat_documento = 1";
         $stmt = $this->conn->prepare($docQuery);
         $stmt->execute();
         $documentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // se crea una consulta dinámica para seleccionar columnas de los documentos
+        // Crear una consulta dinámica para seleccionar columnas de los documentos
         $selectDocumentos = "";
         foreach ($documentos as $doc) {
             $selectDocumentos .= "
@@ -135,8 +209,8 @@ class Trabajadores{
                 LIMIT 1
                 ) AS '{$doc['nombre']}', ";
         }
-
-        // consulta principal incluyendo las columnas dinámicas de documentos
+    
+        // consulta principal incluyendo las columnas dinámicas de documentos y la fecha de ingreso
         $query = "
             SELECT 
                 t.activo, 
@@ -153,13 +227,22 @@ class Trabajadores{
                 t.telefono, 
                 s.nombre AS sede,
                 m.nombre AS modalidad, 
+                (
+                    SELECT fecha 
+                    FROM tb_movimiento_trabajadores mv 
+                    WHERE mv.id_trabajador = t.id 
+                    AND mv.tipo_movimiento = 'ingreso' 
+                    ORDER BY mv.fecha DESC 
+                    LIMIT 1
+                ) AS fecha_ingreso,
                 " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores t
             LEFT JOIN tb_sede s ON t.sede = s.id
             LEFT JOIN tb_modalidad_trabajo m ON t.modalidad = m.id
-            WHERE t.id_tipo = 1 ORDER BY t.apellidos
+            WHERE t.id_tipo = 1 
+            ORDER BY t.apellidos
         ";
-
+    
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -206,7 +289,15 @@ class Trabajadores{
                 t.estado, 
                 t.telefono, 
                 s.nombre AS sede,
-                m.nombre AS modalidad, 
+                m.nombre AS modalidad,
+                (
+                    SELECT fecha 
+                    FROM tb_movimiento_trabajadores mv 
+                    WHERE mv.id_trabajador = t.id 
+                    AND mv.tipo_movimiento = 'ingreso' 
+                    ORDER BY mv.fecha DESC 
+                    LIMIT 1
+                ) AS fecha_ingreso,
                 " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores t
             LEFT JOIN tb_sede s ON t.sede = s.id

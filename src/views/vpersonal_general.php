@@ -27,6 +27,7 @@ $listadoSedes = $trabajadoresController->mostrarSede();
                 <th class="th-apellido">Apellidos</th>
                 <th class="th-nombre">Nombres</th>
                 <th class="th-dni">DNI.</th>
+                <td class="th-ingreso">Fecha de Ingreso</td>
                 <th class="th-cargo">Cargo</th>
                 <th class="th-area">Área</th>
                 <th class="th-dep">Departamento</th>
@@ -51,6 +52,7 @@ $listadoSedes = $trabajadoresController->mostrarSede();
                     <td><?php echo htmlspecialchars($trabajador['apellidos']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['nombres']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['id']); ?></td>
+                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($trabajador['fecha_ingreso']))); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['cargo']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['area']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['departamento']); ?></td>
@@ -449,14 +451,14 @@ $listadoSedes = $trabajadoresController->mostrarSede();
                 document.getElementById("edit-id-tipo").value = celdas[3].textContent.trim();
                 document.getElementById("edit-nombres").value = celdas[6].textContent.trim();
                 document.getElementById("edit-apellidos").value = celdas[5].textContent.trim();
-                document.getElementById("edit-cargo").value = celdas[8].textContent.trim();
-                document.getElementById("edit-area").value = celdas[9].textContent.trim();
-                document.getElementById("edit-departamento").value = celdas[10].textContent.trim();
-                document.getElementById("edit-celular").value = celdas[11].textContent.trim();
-                document.getElementById("edit-correo").value = celdas[12].textContent.trim();
-                document.getElementById("edit-tipo-contrato").value = celdas[15].textContent.trim();
-                document.getElementById("edit-modalidad").value = celdas[13].getAttribute("modalidad-id");
-                document.getElementById("edit-sede").value = celdas[14].getAttribute("sede-id");
+                document.getElementById("edit-cargo").value = celdas[9].textContent.trim();
+                document.getElementById("edit-area").value = celdas[10].textContent.trim();
+                document.getElementById("edit-departamento").value = celdas[11].textContent.trim();
+                document.getElementById("edit-celular").value = celdas[12].textContent.trim();
+                document.getElementById("edit-correo").value = celdas[13].textContent.trim();
+                document.getElementById("edit-tipo-contrato").value = celdas[16].textContent.trim();
+                document.getElementById("edit-modalidad").value = celdas[14].getAttribute("modalidad-id");
+                document.getElementById("edit-sede").value = celdas[15].getAttribute("sede-id");
                 modalEditar.classList.add("modal-activo");
             }
         });

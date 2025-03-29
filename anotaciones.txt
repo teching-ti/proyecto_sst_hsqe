@@ -1,3 +1,31 @@
+/***** COMMIT => Se agregó la fecha de ingreso para las vistas de personal general, personal administrativo y operativo. Los archivos modificados fueron los siguientes.
+21/03/2025 (ANOTACION IMPORTANTE. ¿Como trabaja el sistema en caso de un reingreso? Por ahora, no cuenta con esa funcionalidad, la sección de "Activo", en el formulario de editar no registra en el historial. Para ello, únicamente se debería agregar un nuevo elemento que permita realizar reingresos a personal cesado, par que se realice el registro en el historial de movimientos de trabajador)
+En base al ticket solicitado R-000578.
+AGREGAR EL CAMPO: FECHA DE INGRESO DE PERSONAL
+El campo deberá ser agregado después de la columna DNI
+- Interfaz
+Por el momento se tiene que se deberá de actualizar la vista General, entonces es necesario agregar el th correspondiente para el encabezado y para de igual manera acomodar las filas.
+
+- Lógica
+Modificar el mismo php en donde se usa javascript para cargar los elementos que deberán ser editados, ya que se toman en base al orden de columnas
+
+- Obtención de data
+Modificar el modelo, para que la consulta sql traiga correctamente la data solicitada, en la función getTrabajadores
+
+- Descarga
+Editar archivo de descarga.php, para agregar este nuevo campo y dato
+
+
+Archivos:
+	✔ p_general.css
+	✔ Trabajadores.php
+	✔ descarga.php
+	✔ vpersonal_administrativo.php
+	✔ vpersonal_general.php
+	✔ vpersonal_operativo.php
+
+FIN DEL COMMIT ***************/
+
 
 27/12/2024
 para el nuevo gráfico se agregaró código a:
