@@ -1,3 +1,46 @@
+/*********************/
+💥 Desde aqui inicia la modiifcación por el ticket R-000779.
+
+/***********/ COMMIT R-000779
+Se actualizó el aplicativo para que pueda mostrar los datos de fecha de cese en las tres vistas de trabajadores, se añadieron checkbox de selección de "ingreso o cese" en la vista de historial de movimiento de trabajadores.
+Se modificó el archivo de descarga de usuarios para que cumpla con las columnas requieridas incluyendo la feche de cese. Se actualizaron los scripts sql del modelo de Trabajadores y las vistas. Se actualizó el archivo "base.php" para poder discriminar el acceso por rol, únicamente permitido para personal de HSQE
+
+24/04/2025 Trabajando en la limitación de acceso por menú y página directa para sección de "Documentos".
+
+23/04/2025
+En la v_general.php
+    Se agregó de forma visual la columa para fecha-cese.
+
+21/04/2025
+Se esta trabajando para colocar el dato de Fecha de Cese al lado del de fecha de ingreso. Obviamente se deberá validar que la fecha de cese, sea visible únicamente si el usuario ha sido cesado.
+Obviamente la fecha de cese deberá ser mayor al de fecha de ingreso
+
+
+🧨 Se modificó el css en "inicio.css" => 23/04/2025
+Se agregó y editó a la clase gráfico:
+	border: solid 1px rgba(255, 255, 255, 0.1);
+    animation-name: aparicion_grafico;
+    animation-duration: 2s;
+
+Se agregó y editó la clase grafico:hover:
+	box-shadow: -1px 0px 18px 3px rgba(255,255,255,0.75);
+
+Se colocó un keyframe para mejorar la aparición de los gráficos al momento del renderizado
+@keyframes aparicion_grafico {
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.85;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+💥 Hasta aqui corresponde a la modiifcación por el ticket R-000779.
+/***************/
+
 /***** COMMIT => Se agregó la fecha de ingreso para las vistas de personal general, personal administrativo y operativo. Los archivos modificados fueron los siguientes.
 21/03/2025 (ANOTACION IMPORTANTE. ¿Como trabaja el sistema en caso de un reingreso? Por ahora, no cuenta con esa funcionalidad, la sección de "Activo", en el formulario de editar no registra en el historial. Para ello, únicamente se debería agregar un nuevo elemento que permita realizar reingresos a personal cesado, par que se realice el registro en el historial de movimientos de trabajador)
 En base al ticket solicitado R-000578.

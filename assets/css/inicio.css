@@ -33,14 +33,27 @@
     align-items: center;
     padding: 1rem;
     border-radius: 0.8rem;
-    border: solid 1px white;
+    border: solid 1px rgba(255, 255, 255, 0.1);
     transition: all ease-in-out .24s;
+    animation-name: aparicion_grafico;
+    animation-duration: 3s;
 }
 
 .grafico:hover{
     cursor: pointer;
     box-shadow: -1px 0px 18px 3px rgba(255,255,255,0.75);
+}
 
+@keyframes aparicion_grafico {
+    0%{
+        opacity: 0;
+    }
+    75%{
+        opacity: 0.95;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 
 #grafico-tipo-trabajadores {

@@ -17,6 +17,7 @@ $listadoPersonalAdministrativo = $trabajadoresController->mostrarPersonalAdminis
                 <th class="th-datos-personales">Nombres</th>
                 <th>DNI</th>
                 <th class="th-datos-personales">Fecha Ingreso</th>
+                <th class="th-datos-personales">Fecha Cese</th>
                 <th class="th-datos-personales">Cargo</th>
                 <th class="th-datos-personales">Área</th>
                 <th class="th-datos-personales">Departamento</th>
@@ -30,7 +31,7 @@ $listadoPersonalAdministrativo = $trabajadoresController->mostrarPersonalAdminis
                 <!-- columnas de Documentos -->
                 <?php if (!empty($listadoPersonalAdministrativo)): ?>
                     <?php foreach (array_keys($listadoPersonalAdministrativo[0]) as $col): ?>
-                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'fecha_ingreso', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'sede', 'modalidad', 'estado', 'telefono'])): ?>
+                        <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'fecha_ingreso', 'fecha_cese', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'sede', 'modalidad', 'estado', 'telefono'])): ?>
                             <th class="th-documentos"><?php echo htmlspecialchars($col); ?></th>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -49,6 +50,7 @@ $listadoPersonalAdministrativo = $trabajadoresController->mostrarPersonalAdminis
                     <td><?php echo htmlspecialchars($trabajador['nombres']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['id']); ?></td>
                     <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($trabajador['fecha_ingreso']))); ?></td>
+                    <td><?php echo htmlspecialchars(!empty($trabajador['fecha_cese']) ? date('Y-m-d', strtotime($trabajador['fecha_cese'])) : ''); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['cargo']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['area']); ?></td>
                     <td><?php echo htmlspecialchars($trabajador['departamento']); ?></td>
@@ -61,7 +63,7 @@ $listadoPersonalAdministrativo = $trabajadoresController->mostrarPersonalAdminis
                     <td style="display: none;"><?php echo htmlspecialchars($trabajador['estado']); ?></td>
                     <!-- columnas de Documentos -->
                     <?php foreach ($trabajador as $col => $value): ?>
-                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'fecha_ingreso', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono', 'sede', 'modalidad'])): ?>
+                    <?php if (!in_array($col, ['activo', 'apellidos', 'nombres', 'id', 'fecha_ingreso', 'fecha_cese', 'cargo', 'area', 'departamento', 'celular', 'correo', 'tipo_contrato', 'estado', 'telefono', 'sede', 'modalidad'])): ?>
                         <?php 
                         $documento = json_decode($value, true); 
                         $archivo = $documento['archivo'] ?? null;

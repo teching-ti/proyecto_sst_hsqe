@@ -90,6 +90,16 @@ th, td{
     background: #214058;
 }
 
+.checkbox-group {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+}
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 /* @media (max-width: 720px) {
     #principal{
         margin: 0;

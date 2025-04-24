@@ -57,7 +57,11 @@
                         }
                     ?>
                     <li class="lista-enlace"><a href="historial_trabajadores"><i class="fa-solid fa-user-clock"></i> Historial del Personal</a></li>
-                    <li class="lista-enlace"><a href="documentos"><i class="fa-regular fa-folder-open"></i> Documentos</a></li>
+                    <?php
+                        if($_SESSION['rol']==1 or $_SESSION['rol']==2){
+                        echo "<li class='lista-enlace'><a href='documentos'><i class='fa-regular fa-folder-open'></i> Documentos</a></li>";
+                        }
+                    ?>
                     <?php
                         if($_SESSION['rol']==1){
                         echo "<li class='lista-enlace'><a href='signin'><i class='fa-solid fa-user-plus'></i> Registrar usuario</a></li>";

@@ -68,10 +68,9 @@ th, td{
     max-width: 46px;
 }
 
-.th-ingreso{
+.th-ingreso, .th-cese{
     width: 540px;
     white-space: nowrap;
-
 }
 
 .th-apellido, .th-nombre, .th-cargo, .th-area, .th-departamento, .th-correo{

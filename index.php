@@ -85,6 +85,10 @@ switch ($page) {
         include 'src/views/vdocumentos_trabajador.php';
         break;
     case 'documentos':
+        if(verificarRol(3)){
+            header('Location: ' . BASE_URL . 'inicio');
+            exit;
+        }
         include 'src/views/documentos.php';
         break;
     case 'editar_documento':

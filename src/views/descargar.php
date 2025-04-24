@@ -27,7 +27,7 @@ $output = fopen('php://output', 'w');
 
 // fila de encabezados
 fputcsv($output, [
-    'Item', 'Estado', 'Apellidos', 'Nombres', 'DNI', 'Fecha de Ingreso','Cargo', 'Área', 'Departamento', '# de Celular', 'Correo', 'Tipo de Contrato', 'Modalidad', 'Sede', 'Teléfono'
+    'Item', 'Estado', 'Apellidos', 'Nombres', 'DNI', 'Fecha de Ingreso', 'Fecha de Cese','Cargo', 'Área', 'Departamento', '# de Celular', 'Correo', 'Tipo de Contrato', 'Modalidad', 'Sede', 'Teléfono'
 ]);
 
 // datos de cada trabajador en el CSV
@@ -40,6 +40,7 @@ foreach ($listadoPersonal as $trabajador) {
         $trabajador['nombres'],
         $trabajador['id'],
         $trabajador['fecha_ingreso'],
+        $trabajador['fecha_cese'],
         $trabajador['cargo'],
         $trabajador['area'],
         $trabajador['departamento'],

@@ -8,48 +8,53 @@ class Trabajadores{
         $this->conn = $conn;
     }
 
-    // v1
-    // public function getTrabajadores($ids = []) {
-    //     // realiza consulta a base de datos, extraer tanto los id como los nombres de los datos que serán seleccionables,
-    //     // por ejemplo la modalidad y sede que serán usados de la misma forma a futuro. Considerando que también en estos casos se deberá de crear una tabla para estos cassos
-    //     $query = "SELECT t.activo, t.apellidos, t.nombres, t.id, t.cargo, t.area, t.departamento, t.celular, t.correo, t.tipo_contrato, t.telefono, t.id_tipo, t.modalidad as modalidad_id, t.sede as sede_id, m.nombre as modalidad_nombre, s.nombre as sede_nombre, mv.fecha as fecha_ingreso
-    //     FROM
-    //     tb_trabajadores t
-    //     LEFT JOIN
-    //     tb_modalidad_trabajo m ON t.modalidad = m.id
-    //     LEFT JOIN
-    //     tb_sede s ON t.sede = s.id
-    //     LEFT JOIN
-    //     tb_movimiento_trabajadores mv ON t.id = mv.id_trabajador"
-    //     ;
-
-    //     // clásula where en caso hayan id
-    //     if (!empty($ids)) {
-    //         $placeholders = implode(',', array_fill(0, count($ids), '?'));
-    //         $query .= " WHERE t.id IN ($placeholders)";
-    //     }
-
-    //     // agregar order by al final
-    //     $query .= " ORDER BY t.apellidos";
-    
-    //     // se prepara la consulta
-    //     $stmt = $this->conn->prepare($query);
-        
-    //     // se vinculan los parámetros siempre y cuando hayan IDS presentes en la consulta
-    //     if (!empty($ids)) {
-    //         foreach ($ids as $k => $id) {
-    //             $stmt->bindValue($k + 1, $id, PDO::PARAM_INT);
-    //         }
-    //     }
-        
-    //     $stmt->execute();
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
-
-    //v2
     public function getTrabajadores($ids = []) {
         // Consulta ajustada para obtener solo el ingreso más reciente por trabajador
+        // $query = "
+        //     SELECT 
+        //         t.activo, 
+        //         t.apellidos, 
+        //         t.nombres, 
+        //         t.id, 
+        //         t.cargo, 
+        //         t.area, 
+        //         t.departamento, 
+        //         t.celular, 
+        //         t.correo, 
+        //         t.tipo_contrato, 
+        //         t.telefono, 
+        //         t.id_tipo, 
+        //         t.modalidad AS modalidad_id, 
+        //         t.sede AS sede_id, 
+        //         m.nombre AS modalidad_nombre, 
+        //         s.nombre AS sede_nombre, 
+        //         mv.fecha AS fecha_ingreso
+        //     FROM 
+        //         tb_trabajadores t
+        //     LEFT JOIN 
+        //         tb_modalidad_trabajo m ON t.modalidad = m.id
+        //     LEFT JOIN 
+        //         tb_sede s ON t.sede = s.id
+        //     LEFT JOIN (
+        //         -- Subconsulta para obtener solo el ingreso más reciente
+        //         SELECT 
+        //             id_trabajador, 
+        //             fecha
+        //         FROM (
+        //             SELECT 
+        //                 id_trabajador, 
+        //                 fecha,
+        //                 ROW_NUMBER() OVER (PARTITION BY id_trabajador ORDER BY fecha DESC) AS rn
+        //             FROM 
+        //                 tb_movimiento_trabajadores
+        //             WHERE 
+        //                 tipo_movimiento = 'ingreso'
+        //         ) AS sub
+        //         WHERE 
+        //             rn = 1
+        //     ) mv ON t.id = mv.id_trabajador
+        // ";
+
         $query = "
             SELECT 
                 t.activo, 
@@ -68,7 +73,8 @@ class Trabajadores{
                 t.sede AS sede_id, 
                 m.nombre AS modalidad_nombre, 
                 s.nombre AS sede_nombre, 
-                mv.fecha AS fecha_ingreso
+                mv_ingreso.fecha AS fecha_ingreso,
+                mv_cese.fecha AS fecha_cese
             FROM 
                 tb_trabajadores t
             LEFT JOIN 
@@ -76,7 +82,7 @@ class Trabajadores{
             LEFT JOIN 
                 tb_sede s ON t.sede = s.id
             LEFT JOIN (
-                -- Subconsulta para obtener solo el ingreso más reciente
+                -- Subconsulta para obtener el ingreso más reciente
                 SELECT 
                     id_trabajador, 
                     fecha
@@ -89,10 +95,28 @@ class Trabajadores{
                         tb_movimiento_trabajadores
                     WHERE 
                         tipo_movimiento = 'ingreso'
-                ) AS sub
+                    ) AS sub
                 WHERE 
                     rn = 1
-            ) mv ON t.id = mv.id_trabajador
+            ) mv_ingreso ON t.id = mv_ingreso.id_trabajador
+            LEFT JOIN (
+                -- Subconsulta para obtener el cese más reciente
+                SELECT 
+                    id_trabajador, 
+                    fecha
+                FROM (
+                    SELECT 
+                        id_trabajador, 
+                        fecha,
+                        ROW_NUMBER() OVER (PARTITION BY id_trabajador ORDER BY fecha DESC) AS rn
+                    FROM 
+                        tb_movimiento_trabajadores
+                    WHERE 
+                        tipo_movimiento = 'cese'
+                    ) AS sub
+                WHERE 
+                    rn = 1
+            ) mv_cese ON t.id = mv_cese.id_trabajador
         ";
     
         // Cláusula WHERE en caso de que haya IDs
@@ -235,6 +259,14 @@ class Trabajadores{
                     ORDER BY mv.fecha DESC 
                     LIMIT 1
                 ) AS fecha_ingreso,
+                (
+                SELECT fecha 
+                FROM tb_movimiento_trabajadores mv 
+                WHERE mv.id_trabajador = t.id 
+                AND mv.tipo_movimiento = 'cese' 
+                ORDER BY mv.fecha DESC 
+                LIMIT 1
+                ) AS fecha_cese,
                 " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores t
             LEFT JOIN tb_sede s ON t.sede = s.id
@@ -298,6 +330,14 @@ class Trabajadores{
                     ORDER BY mv.fecha DESC 
                     LIMIT 1
                 ) AS fecha_ingreso,
+                (
+                SELECT fecha 
+                FROM tb_movimiento_trabajadores mv 
+                WHERE mv.id_trabajador = t.id 
+                AND mv.tipo_movimiento = 'cese' 
+                ORDER BY mv.fecha DESC 
+                LIMIT 1
+                ) AS fecha_cese,
                 " . rtrim($selectDocumentos, ", ") . "
             FROM tb_trabajadores t
             LEFT JOIN tb_sede s ON t.sede = s.id
